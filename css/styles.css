@@ -676,24 +676,31 @@ button {
 /* Foto da Especialista no Sobre */
 .about-photo-wrapper {
   width: 100%;
-  height: 320px;
+  height: 410px;
   border-radius: var(--radius-md);
   overflow: hidden;
   margin-bottom: 1.75rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 12px 28px rgba(31, 27, 24, 0.14);
   border: 3px solid #FFFFFF;
+  background: #5A5859;
 }
 
 .about-specialist-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 15%;
+  object-position: center 8%;
   transition: transform var(--transition-normal);
 }
 
 .about-card-frame:hover .about-specialist-photo {
-  transform: scale(1.03);
+  transform: scale(1.02);
+}
+
+@media (max-width: 640px) {
+  .about-photo-wrapper {
+    height: 350px;
+  }
 }
 
 /* Espaço da Clínica Consultório */
