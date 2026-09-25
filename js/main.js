@@ -224,6 +224,257 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // =========================================================================
+  // 8. Rastreamento de Tráfego Pago & Cookies (Google Ads, Meta & LGPD)
+  // =========================================================================
+  const TRACKING_CONFIG = {
+    // Insira seu ID do Google Analytics 4 (ex: "G-XXXXXXXXXX")
+    googleAnalyticsId: "",
+    // Insira seu ID do Google Ads (ex: "AW-XXXXXXXXXX")
+    googleAdsId: "",
+    // Rótulo da Ação de Conversão no Google Ads para o clique no WhatsApp (ex: "AbCdEfGhIjKlMnOpQr")
+    googleAdsWhatsAppConversionLabel: "",
+    // Insira seu ID do Pixel da Meta / Facebook (ex: "123456789012345")
+    metaPixelId: "",
+    // Google Tag Manager ID (ex: "GTM-XXXXXXX")
+    googleTagManagerId: ""
+  };
+
+  const COOKIE_STORAGE_KEY = 'lt_cookie_consent_preferences';
+
+  // Obter consentimento salvo no localStorage
+  const getSavedConsent = () => {
+    try {
+      const data = localStorage.getItem(COOKIE_STORAGE_KEY);
+      return data ? JSON.parse(data) : null;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  // Salvar consentimento e atualizar tags
+  const saveConsent = (preferences) => {
+    try {
+      localStorage.setItem(COOKIE_STORAGE_KEY, JSON.stringify({
+        ...preferences,
+        updatedAt: new Date().toISOString()
+      }));
+    } catch (e) {}
+
+    // Atualiza o Google Consent Mode v2 dinamicamente
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': preferences.marketing ? 'granted' : 'denied',
+        'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+        'ad_user_data': preferences.marketing ? 'granted' : 'denied',
+        'ad_personalization': preferences.marketing ? 'granted' : 'denied'
+      });
+    }
+
+    // Inicializa Meta Pixel se o consentimento de marketing for concedido
+    if (preferences.marketing && TRACKING_CONFIG.metaPixelId && typeof fbq === 'function') {
+      fbq('init', TRACKING_CONFIG.metaPixelId);
+      fbq('track', 'PageView');
+    }
+
+    // Dispara evento de consentimento atualizado no DataLayer (para GTM)
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'cookie_consent_updated',
+      'consent_analytics': preferences.analytics,
+      'consent_marketing': preferences.marketing
+    });
+  };
+
+  // Elementos do Banner e Modal de Cookies
+  const cookieBanner = document.getElementById('cookieBanner');
+  const cookieModal = document.getElementById('cookieModalBackdrop');
+  const cookiePrivacyTrigger = document.getElementById('cookiePrivacyTrigger');
+  const btnAcceptAll = document.getElementById('btnAcceptAllCookies');
+  const btnAcceptEssential = document.getElementById('btnAcceptEssentialCookies');
+  const btnOpenModal = document.getElementById('btnOpenCookieModal');
+  const btnCloseModal = document.getElementById('btnCloseCookieModal');
+  const btnSaveModal = document.getElementById('btnSaveCookiePreferences');
+  const btnModalAcceptAll = document.getElementById('btnModalAcceptAll');
+  const openCookieSettingsBtn = document.getElementById('openCookieSettingsBtn');
+  const openCookieSettingsNavBtn = document.getElementById('openCookieSettingsNavBtn');
+  const openCookieSettingsFromPolicy = document.getElementById('openCookieSettingsFromPolicy');
+
+  const chkAnalytics = document.getElementById('cookieAnalytics');
+  const chkMarketing = document.getElementById('cookieMarketing');
+
+  // Abre a janela de preferências
+  const openModal = () => {
+    const current = getSavedConsent() || { analytics: true, marketing: true };
+    if (chkAnalytics) chkAnalytics.checked = current.analytics !== false;
+    if (chkMarketing) chkMarketing.checked = current.marketing !== false;
+    if (cookieModal) {
+      cookieModal.classList.add('show');
+      cookieModal.setAttribute('aria-hidden', 'false');
+    }
+  };
+
+  // Fecha a janela de preferências
+  const closeModal = () => {
+    if (cookieModal) {
+      cookieModal.classList.remove('show');
+      cookieModal.setAttribute('aria-hidden', 'true');
+    }
+  };
+
+  // Esconde o banner de aviso
+  const hideBanner = () => {
+    if (cookieBanner) {
+      cookieBanner.classList.remove('show');
+      cookieBanner.setAttribute('aria-hidden', 'true');
+    }
+    if (cookiePrivacyTrigger) {
+      cookiePrivacyTrigger.style.display = 'inline-flex';
+    }
+  };
+
+  // Inicialização do estado de cookies na carga da página
+  const savedConsent = getSavedConsent();
+  if (!savedConsent) {
+    // Usuário novo: exibe o banner de cookies
+    if (cookieBanner) {
+      setTimeout(() => {
+        cookieBanner.classList.add('show');
+        cookieBanner.setAttribute('aria-hidden', 'false');
+      }, 700);
+    }
+  } else {
+    // Já possui consentimento salvo: aplica às tags e exibe o botão discreto de privacidade
+    saveConsent(savedConsent);
+    if (cookiePrivacyTrigger) {
+      cookiePrivacyTrigger.style.display = 'inline-flex';
+    }
+  }
+
+  // Eventos de clique nos botões de aceitação
+  if (btnAcceptAll) {
+    btnAcceptAll.addEventListener('click', () => {
+      saveConsent({ essential: true, analytics: true, marketing: true });
+      hideBanner();
+      showToast("Preferências de cookies salvas. Obrigado!");
+    });
+  }
+
+  if (btnAcceptEssential) {
+    btnAcceptEssential.addEventListener('click', () => {
+      saveConsent({ essential: true, analytics: false, marketing: false });
+      hideBanner();
+      showToast("Apenas cookies necessários foram ativados.");
+    });
+  }
+
+  if (btnOpenModal) {
+    btnOpenModal.addEventListener('click', openModal);
+  }
+
+  if (btnCloseModal) {
+    btnCloseModal.addEventListener('click', closeModal);
+  }
+
+  if (cookieModal) {
+    cookieModal.addEventListener('click', (e) => {
+      if (e.target === cookieModal) closeModal();
+    });
+  }
+
+  if (btnSaveModal) {
+    btnSaveModal.addEventListener('click', () => {
+      const preferences = {
+        essential: true,
+        analytics: chkAnalytics ? chkAnalytics.checked : false,
+        marketing: chkMarketing ? chkMarketing.checked : false
+      };
+      saveConsent(preferences);
+      closeModal();
+      hideBanner();
+      showToast("Preferências de cookies salvas com sucesso!");
+    });
+  }
+
+  if (btnModalAcceptAll) {
+    btnModalAcceptAll.addEventListener('click', () => {
+      if (chkAnalytics) chkAnalytics.checked = true;
+      if (chkMarketing) chkMarketing.checked = true;
+      saveConsent({ essential: true, analytics: true, marketing: true });
+      closeModal();
+      hideBanner();
+      showToast("Todos os cookies foram aceitos!");
+    });
+  }
+
+  if (cookiePrivacyTrigger) {
+    cookiePrivacyTrigger.addEventListener('click', openModal);
+  }
+
+  if (openCookieSettingsBtn) {
+    openCookieSettingsBtn.addEventListener('click', openModal);
+  }
+
+  if (openCookieSettingsNavBtn) {
+    openCookieSettingsNavBtn.addEventListener('click', openModal);
+  }
+
+  if (openCookieSettingsFromPolicy) {
+    openCookieSettingsFromPolicy.addEventListener('click', openModal);
+  }
+
+  // =========================================================================
+  // 9. Disparo de Conversões no WhatsApp (Google Ads & Meta Pixel Lead)
+  // =========================================================================
+  const setupWhatsAppConversionTracking = () => {
+    const whatsappElements = document.querySelectorAll('.cta-whatsapp, .floating-whatsapp-btn, a[href*="wa.me"]');
+
+    whatsappElements.forEach(element => {
+      element.addEventListener('click', () => {
+        const consent = getSavedConsent();
+
+        // 1. DataLayer Event (compatível com Google Tag Manager)
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'whatsapp_lead_click',
+          'lead_source': 'landing_page',
+          'lead_clinic': CLINIC_CONFIG.clinicName
+        });
+
+        // 2. Disparos se houver consentimento de marketing ativo
+        if (!consent || consent.marketing !== false) {
+          // Meta Pixel Evento 'Lead'
+          if (typeof fbq === 'function') {
+            fbq('track', 'Lead', {
+              content_name: 'Clique Botão WhatsApp',
+              content_category: 'Agendamento Estética Facial',
+              currency: 'BRL'
+            });
+          }
+
+          // Google Analytics 4 Evento 'generate_lead'
+          if (typeof gtag === 'function') {
+            gtag('event', 'generate_lead', {
+              'event_category': 'WhatsApp',
+              'event_label': 'Agendamento Consulta Santo André'
+            });
+
+            // Google Ads Conversão Específica
+            if (TRACKING_CONFIG.googleAdsId && TRACKING_CONFIG.googleAdsWhatsAppConversionLabel) {
+              gtag('event', 'conversion', {
+                'send_to': `${TRACKING_CONFIG.googleAdsId}/${TRACKING_CONFIG.googleAdsWhatsAppConversionLabel}`
+              });
+            }
+          }
+
+          console.log("%c [Tracking] Lead disparado com sucesso no WhatsApp ", "background: #25D366; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: bold;");
+        }
+      });
+    });
+  };
+
+  setupWhatsAppConversionTracking();
+
   // Log informativo para o desenvolvedor
-  console.log("%c Dra. Laís Torres | Landing Page Carregada ", "background: #C5A880; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;");
+  console.log("%c Dra. Laís Torres | Landing Page & Cookies Carregados ", "background: #C5A880; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;");
 });

@@ -14,6 +14,37 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
+  <!-- Google Consent Mode v2 (Conformidade Google Ads / LGPD) -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+
+    var defaultConsent = {
+      'ad_storage': 'denied',
+      'analytics_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'wait_for_update': 500
+    };
+
+    try {
+      var savedConsent = localStorage.getItem('lt_cookie_consent_preferences');
+      if (savedConsent) {
+        var parsed = JSON.parse(savedConsent);
+        if (parsed.marketing) {
+          defaultConsent.ad_storage = 'granted';
+          defaultConsent.ad_user_data = 'granted';
+          defaultConsent.ad_personalization = 'granted';
+        }
+        if (parsed.analytics) {
+          defaultConsent.analytics_storage = 'granted';
+        }
+      }
+    } catch(e) {}
+
+    gtag('consent', 'default', defaultConsent);
+  </script>
+
   <link rel="stylesheet" href="css/styles.css" />
   <style>
     .legal-page-header {
@@ -158,8 +189,13 @@
       <ul>
         <li>Essas ferramentas nos ajudam a mensurar quantas pessoas encontraram nossa clínica no Google e entraram em contato.</li>
         <li>Nenhum dado pessoal sensível (como histórico clínico ou financeiro) é compartilhado com plataformas de anúncios.</li>
-        <li>Você pode desativar o uso de cookies a qualquer momento nas configurações do seu navegador de internet.</li>
+        <li>Você pode desativar o uso de cookies a qualquer momento nas configurações do seu navegador de internet ou personalizar suas opções diretamente através do nosso botão abaixo.</li>
       </ul>
+      <div style="margin: 1.5rem 0;">
+        <button type="button" class="btn btn-gold btn-sm" id="openCookieSettingsFromPolicy">
+          <span>⚙️ Gerenciar Preferências de Cookies do Site</span>
+        </button>
+      </div>
 
       <h2>3. Sigilo Médico-Odontológico e LGPD</h2>
       <p>Todos os dados clínicos, fotografias de acompanhamento e prontuários odontológicos são mantidos sob estrito <strong>sigilo profissional</strong>, em observância ao Código de Ética Odontológica (Conselho Federal de Odontologia - CFO e CROSP) e à Lei Geral de Proteção de Dados Pessoais (LGPD - Lei nº 13.709/2018).</p>
@@ -188,8 +224,138 @@
       <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">
         Av. Palmares, 884, Loja 02 - Vila Palmares, Santo André – SP
       </p>
+      <p style="margin-top: 1rem;">
+        <button type="button" class="btn-footer-cookie-pref" id="openCookieSettingsBtn">Preferências de Cookies</button>
+      </p>
     </div>
   </footer>
 
+  <!-- Toast Notification Container -->
+  <div class="toast-notification" id="toastNotification" role="alert" aria-live="polite">
+    <span id="toastMsg">Configurações salvas!</span>
+  </div>
+
+  <!-- Banner de Consentimento de Cookies LGPD -->
+  <aside class="cookie-banner" id="cookieBanner" aria-label="Consentimento de Cookies e Privacidade" role="dialog" aria-modal="false">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-header">
+        <div class="cookie-icon-wrapper" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 class="cookie-banner-title">Privacidade e Uso de Cookies</h3>
+      </div>
+      <p class="cookie-banner-text">
+        Utilizamos cookies e tecnologias de rastreamento para mensurar o tráfego e personalizar anúncios (Google Ads e Meta Ads), em conformidade com a <strong>LGPD</strong>.
+      </p>
+      <div class="cookie-banner-actions">
+        <button type="button" class="btn btn-gold btn-sm" id="btnAcceptAllCookies">
+          <span>Aceitar Todos</span>
+        </button>
+        <button type="button" class="btn-outline-cookie" id="btnAcceptEssentialCookies">
+          <span>Apenas Necessários</span>
+        </button>
+        <button type="button" class="btn-text-cookie" id="btnOpenCookieModal">
+          <span>Personalizar</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Modal de Preferências Detalhadas de Cookies -->
+  <div class="cookie-modal-backdrop" id="cookieModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="cookieModalTitle" aria-hidden="true">
+    <div class="cookie-modal-card">
+      <div class="cookie-modal-header">
+        <div class="cookie-modal-title-box">
+          <span class="cookie-modal-eyebrow">LT Laís Torres</span>
+          <h3 id="cookieModalTitle" class="cookie-modal-title">Preferências de Cookies</h3>
+        </div>
+        <button type="button" class="cookie-modal-close" id="btnCloseCookieModal" aria-label="Fechar janela">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="cookie-modal-body">
+        <p class="cookie-modal-intro">
+          Respeitamos sua privacidade. Gerencie abaixo quais categorias de cookies e tecnologias de rastreamento você autoriza em nossa página.
+        </p>
+
+        <!-- Categoria 1: Essenciais -->
+        <div class="cookie-category-item">
+          <div class="cookie-cat-header">
+            <div class="cookie-cat-info">
+              <strong class="cookie-cat-name">Cookies Essenciais</strong>
+              <span class="cookie-badge-status badge-required">Sempre Ativos</span>
+            </div>
+            <label class="cookie-switch" aria-label="Cookies Essenciais sempre ativos">
+              <input type="checkbox" checked disabled id="cookieEssential">
+              <span class="cookie-slider disabled"></span>
+            </label>
+          </div>
+          <p class="cookie-cat-desc">
+            Fundamentais para o carregamento correto do site, estabilidade, segurança e para salvar suas preferências de consentimento.
+          </p>
+        </div>
+
+        <!-- Categoria 2: Analíticos -->
+        <div class="cookie-category-item">
+          <div class="cookie-cat-header">
+            <div class="cookie-cat-info">
+              <strong class="cookie-cat-name">Cookies Analíticos</strong>
+              <span class="cookie-badge-status">Google Analytics</span>
+            </div>
+            <label class="cookie-switch" aria-label="Permitir Cookies Analíticos">
+              <input type="checkbox" id="cookieAnalytics" checked>
+              <span class="cookie-slider"></span>
+            </label>
+          </div>
+          <p class="cookie-cat-desc">
+            Ajudam a entender quais procedimentos são mais visitados e a melhorar continuamente a velocidade e conteúdo da página, de forma 100% anônima.
+          </p>
+        </div>
+
+        <!-- Categoria 3: Marketing & Rastreamento -->
+        <div class="cookie-category-item">
+          <div class="cookie-cat-header">
+            <div class="cookie-cat-info">
+              <strong class="cookie-cat-name">Cookies de Marketing & Conversão</strong>
+              <span class="cookie-badge-status">Google Ads & Meta</span>
+            </div>
+            <label class="cookie-switch" aria-label="Permitir Cookies de Marketing">
+              <input type="checkbox" id="cookieMarketing" checked>
+              <span class="cookie-slider"></span>
+            </label>
+          </div>
+          <p class="cookie-cat-desc">
+            Utilizados pelas ferramentas de anúncios do Google e Meta (Facebook/Instagram) para mensurar contatos realizados pelo WhatsApp e otimizar campanhas de tráfego pago.
+          </p>
+        </div>
+      </div>
+
+      <div class="cookie-modal-footer">
+        <button type="button" class="btn-outline-cookie" id="btnSaveCookiePreferences">
+          <span>Salvar Escolhas</span>
+        </button>
+        <button type="button" class="btn btn-gold btn-sm" id="btnModalAcceptAll">
+          <span>Aceitar Todos</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trigger Flutuante Discreto de Reabrir Preferências -->
+  <button type="button" class="cookie-privacy-trigger" id="cookiePrivacyTrigger" aria-label="Gerenciar preferências de cookies e privacidade" title="Preferências de Cookies">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    <span>Privacidade</span>
+  </button>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

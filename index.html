@@ -33,6 +33,53 @@
   <meta name="twitter:description" content="Especialista em Harmonização Orofacial, Botox e Otomodelação sem cortes em Santo André - SP." />
   <meta name="twitter:image" content="https://ricardorickbony-lgtm.github.io/clinica-lais-torres/assets/logo-lais-torres-dark.png" />
 
+  <!-- ========================================================================= -->
+  <!-- Rastreamento & Cookies: Google Consent Mode v2 (Conformidade Google Ads / LGPD) -->
+  <!-- ========================================================================= -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+
+    // Configuração inicial de consentimento (Default: 'denied' até aprovação expressa do usuário)
+    var defaultConsent = {
+      'ad_storage': 'denied',
+      'analytics_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'wait_for_update': 500
+    };
+
+    // Lê preferências salvas se o usuário já visitou anteriormente
+    try {
+      var savedConsent = localStorage.getItem('lt_cookie_consent_preferences');
+      if (savedConsent) {
+        var parsed = JSON.parse(savedConsent);
+        if (parsed.marketing) {
+          defaultConsent.ad_storage = 'granted';
+          defaultConsent.ad_user_data = 'granted';
+          defaultConsent.ad_personalization = 'granted';
+        }
+        if (parsed.analytics) {
+          defaultConsent.analytics_storage = 'granted';
+        }
+      }
+    } catch(e) {}
+
+    gtag('consent', 'default', defaultConsent);
+  </script>
+
+  <!-- Meta Pixel Code (Facebook & Instagram Ads) Base -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+  </script>
+
   <!-- Google Fonts: Playfair Display + Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1157,6 +1204,7 @@
           <li><a href="#faq">Dúvidas Frequentes</a></li>
           <li><a href="#localizacao">Como Chegar</a></li>
           <li><a href="politica-de-privacidade.html" class="legal-badge-link">Política de Privacidade</a></li>
+          <li><button type="button" class="btn-footer-nav-cookie" id="openCookieSettingsNavBtn">Preferências de Cookies</button></li>
           <li><a href="https://maps.app.goo.gl/uFq2Mmx1EERfb7jS9" target="_blank" rel="noopener noreferrer">Ficha Google Maps</a></li>
         </ul>
       </div>
@@ -1201,6 +1249,8 @@
             <a href="politica-de-privacidade.html#termos">Termos de Uso & Google Ads</a>
             <span class="sep">•</span>
             <a href="politica-de-privacidade.html#lgpd">Proteção de Dados (LGPD)</a>
+            <span class="sep">•</span>
+            <button type="button" class="btn-footer-cookie-pref" id="openCookieSettingsBtn">Preferências de Cookies</button>
           </div>
         </div>
 
@@ -1228,6 +1278,129 @@
   <div class="toast-notification" id="toastNotification" role="alert" aria-live="polite">
     <span id="toastMsg">Endereço copiado com sucesso!</span>
   </div>
+
+  <!-- ========================================================================= -->
+  <!-- Banner de Consentimento de Cookies LGPD & Google Consent Mode v2 -->
+  <!-- ========================================================================= -->
+  <aside class="cookie-banner" id="cookieBanner" aria-label="Consentimento de Cookies e Privacidade" role="dialog" aria-modal="false">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-header">
+        <div class="cookie-icon-wrapper" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 class="cookie-banner-title">Privacidade e Uso de Cookies</h3>
+      </div>
+      <p class="cookie-banner-text">
+        Utilizamos cookies e tecnologias de rastreamento para mensurar o tráfego, personalizar anúncios (Google Ads e Meta Ads) e aprimorar sua experiência, em conformidade com a <strong>LGPD</strong>. Você pode personalizar suas opções ou aceitar todos os cookies. Saiba mais em nossa <a href="politica-de-privacidade.html" class="cookie-policy-link">Política de Privacidade</a>.
+      </p>
+      <div class="cookie-banner-actions">
+        <button type="button" class="btn btn-gold btn-sm" id="btnAcceptAllCookies">
+          <span>Aceitar Todos</span>
+        </button>
+        <button type="button" class="btn-outline-cookie" id="btnAcceptEssentialCookies">
+          <span>Apenas Necessários</span>
+        </button>
+        <button type="button" class="btn-text-cookie" id="btnOpenCookieModal">
+          <span>Personalizar</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Modal de Preferências Detalhadas de Cookies -->
+  <div class="cookie-modal-backdrop" id="cookieModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="cookieModalTitle" aria-hidden="true">
+    <div class="cookie-modal-card">
+      <div class="cookie-modal-header">
+        <div class="cookie-modal-title-box">
+          <span class="cookie-modal-eyebrow">LT Laís Torres</span>
+          <h3 id="cookieModalTitle" class="cookie-modal-title">Preferências de Cookies</h3>
+        </div>
+        <button type="button" class="cookie-modal-close" id="btnCloseCookieModal" aria-label="Fechar janela">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="cookie-modal-body">
+        <p class="cookie-modal-intro">
+          Respeitamos sua privacidade. Gerencie abaixo quais categorias de cookies e tecnologias de rastreamento você autoriza em nossa página.
+        </p>
+
+        <!-- Categoria 1: Essenciais -->
+        <div class="cookie-category-item">
+          <div class="cookie-cat-header">
+            <div class="cookie-cat-info">
+              <strong class="cookie-cat-name">Cookies Essenciais</strong>
+              <span class="cookie-badge-status badge-required">Sempre Ativos</span>
+            </div>
+            <label class="cookie-switch" aria-label="Cookies Essenciais sempre ativos">
+              <input type="checkbox" checked disabled id="cookieEssential">
+              <span class="cookie-slider disabled"></span>
+            </label>
+          </div>
+          <p class="cookie-cat-desc">
+            Fundamentais para o carregamento correto do site, estabilidade, segurança e para salvar suas preferências de consentimento.
+          </p>
+        </div>
+
+        <!-- Categoria 2: Analíticos -->
+        <div class="cookie-category-item">
+          <div class="cookie-cat-header">
+            <div class="cookie-cat-info">
+              <strong class="cookie-cat-name">Cookies Analíticos</strong>
+              <span class="cookie-badge-status">Google Analytics</span>
+            </div>
+            <label class="cookie-switch" aria-label="Permitir Cookies Analíticos">
+              <input type="checkbox" id="cookieAnalytics" checked>
+              <span class="cookie-slider"></span>
+            </label>
+          </div>
+          <p class="cookie-cat-desc">
+            Ajudam a entender quais procedimentos são mais visitados e a melhorar continuamente a velocidade e conteúdo da página, de forma 100% anônima.
+          </p>
+        </div>
+
+        <!-- Categoria 3: Marketing & Rastreamento -->
+        <div class="cookie-category-item">
+          <div class="cookie-cat-header">
+            <div class="cookie-cat-info">
+              <strong class="cookie-cat-name">Cookies de Marketing & Conversão</strong>
+              <span class="cookie-badge-status">Google Ads & Meta</span>
+            </div>
+            <label class="cookie-switch" aria-label="Permitir Cookies de Marketing">
+              <input type="checkbox" id="cookieMarketing" checked>
+              <span class="cookie-slider"></span>
+            </label>
+          </div>
+          <p class="cookie-cat-desc">
+            Utilizados pelas ferramentas de anúncios do Google e Meta (Facebook/Instagram) para mensurar contatos realizados pelo WhatsApp e otimizar campanhas de tráfego pago.
+          </p>
+        </div>
+      </div>
+
+      <div class="cookie-modal-footer">
+        <button type="button" class="btn-outline-cookie" id="btnSaveCookiePreferences">
+          <span>Salvar Escolhas</span>
+        </button>
+        <button type="button" class="btn btn-gold btn-sm" id="btnModalAcceptAll">
+          <span>Aceitar Todos</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trigger Flutuante Discreto de Reabrir Preferências -->
+  <button type="button" class="cookie-privacy-trigger" id="cookiePrivacyTrigger" aria-label="Gerenciar preferências de cookies e privacidade" title="Preferências de Cookies">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    <span>Privacidade</span>
+  </button>
 
   <!-- JavaScript -->
   <script src="js/main.js"></script>
