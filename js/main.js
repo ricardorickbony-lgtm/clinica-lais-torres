@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ex: "5511987654321"
     whatsappNumber: "5511992108168",
     clinicName: "Dra. Laís Torres - Harmonização Orofacial",
+    razaoSocial: "LT LAÍS TORRES ODONTOLOGIA E ESTÉTICA LTDA",
+    cnpj: "47.183.038/0001-00",
+    crosp: "109221",
     addressText: "Av. Palmares, 884, Loja 02 - Vila Palmares, Santo André – SP, CEP 09061-410",
     defaultMessage: "Olá, Dra. Laís Torres! Vim pelo site oficial e gostaria de agendar uma consulta de avaliação em Santo André."
   };
