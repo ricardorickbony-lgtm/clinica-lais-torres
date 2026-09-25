@@ -478,6 +478,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupWhatsAppConversionTracking();
 
+  // =========================================================================
+  // 10. Casos Clínicos (Antes e Depois) - Lightbox & Toggle Mais Casos
+  // =========================================================================
+  const caseWrappers = document.querySelectorAll('.case-image-wrapper');
+  const caseLightbox = document.getElementById('caseLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const btnCloseLightbox = document.getElementById('btnCloseLightbox');
+
+  if (caseLightbox && lightboxImg && lightboxTitle) {
+    const openLightbox = (imgSrc, caption) => {
+      lightboxImg.src = imgSrc;
+      lightboxImg.alt = caption;
+      lightboxTitle.textContent = caption;
+      caseLightbox.classList.add('show');
+      caseLightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeLightbox = () => {
+      caseLightbox.classList.remove('show');
+      caseLightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        lightboxImg.src = '';
+      }, 250);
+    };
+
+    caseWrappers.forEach(wrap => {
+      wrap.addEventListener('click', () => {
+        const fullImg = wrap.getAttribute('data-full-img');
+        const caption = wrap.getAttribute('data-caption') || 'Caso Clínico — Dra. Laís Torres';
+        if (fullImg) openLightbox(fullImg, caption);
+      });
+    });
+
+    if (btnCloseLightbox) {
+      btnCloseLightbox.addEventListener('click', closeLightbox);
+    }
+
+    caseLightbox.addEventListener('click', (e) => {
+      if (e.target === caseLightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && caseLightbox.classList.contains('show')) {
+        closeLightbox();
+      }
+    });
+  }
+
+  // Toggle de Casos Adicionais
+  const btnToggleMoreCases = document.getElementById('btnToggleMoreCases');
+  const additionalCasesGrid = document.getElementById('additionalCasesGrid');
+
+  if (btnToggleMoreCases && additionalCasesGrid) {
+    btnToggleMoreCases.addEventListener('click', () => {
+      const isExpanded = btnToggleMoreCases.getAttribute('aria-expanded') === 'true';
+      if (!isExpanded) {
+        additionalCasesGrid.style.display = 'grid';
+        btnToggleMoreCases.setAttribute('aria-expanded', 'true');
+        btnToggleMoreCases.querySelector('span').textContent = 'Recolher Casos Clínicos';
+      } else {
+        additionalCasesGrid.style.display = 'none';
+        btnToggleMoreCases.setAttribute('aria-expanded', 'false');
+        btnToggleMoreCases.querySelector('span').textContent = 'Ver Mais Casos Clínicos de Perfil e Lábios (+2)';
+      }
+    });
+  }
+
   // Log informativo para o desenvolvedor
-  console.log("%c Dra. Laís Torres | Landing Page & Cookies Carregados ", "background: #C5A880; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;");
+  console.log("%c Dra. Laís Torres | Landing Page, Cookies & Casos Clínicos Carregados ", "background: #C5A880; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;");
 });

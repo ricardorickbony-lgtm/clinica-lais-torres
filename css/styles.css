@@ -2909,4 +2909,489 @@ button {
   }
 }
 
+/* ==========================================================================
+   18. Seção de Casos Clínicos & Transformações Reais (Antes e Depois)
+   ========================================================================== */
+.clinical-cases-section {
+  background: #FFFFFF;
+  padding: 6.5rem 0 5.5rem;
+  position: relative;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.cfo-compliance-banner {
+  background: rgba(197, 168, 128, 0.08);
+  border-left: 4px solid var(--gold-500);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.6rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.15rem;
+  margin: 2.25rem auto 3.5rem;
+  max-width: 1100px;
+}
+
+.cfo-badge-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(197, 168, 128, 0.2);
+  color: var(--gold-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cfo-badge-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.cfo-badge-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.cfo-badge-text strong {
+  display: block;
+  font-size: 0.925rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+/* Grid de Casos Clínicos */
+.clinical-cases-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.25rem;
+  margin-bottom: 2rem;
+}
+
+.case-card {
+  background: #FAF8F5;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+}
+
+.case-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(31, 27, 24, 0.12);
+  border-color: var(--gold-400);
+}
+
+.case-card.featured-case {
+  background: #FFFFFF;
+  border: 1.5px solid var(--gold-400);
+  box-shadow: 0 10px 30px rgba(197, 168, 128, 0.2);
+}
+
+.case-image-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #25211E;
+}
+
+.case-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 5;
+  background: rgba(31, 27, 24, 0.85);
+  backdrop-filter: blur(4px);
+  color: var(--text-gold-light);
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(197, 168, 128, 0.3);
+}
+
+.case-tag.badge-gold {
+  background: var(--gold-500);
+  color: #FFFFFF;
+  border-color: var(--gold-600);
+}
+
+.case-image-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+}
+
+.case-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.case-image-wrapper:hover .case-img {
+  transform: scale(1.04);
+}
+
+/* Indicadores Antes / Depois sobre a imagem */
+.case-indicators {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.indicator-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+
+.indicator-badge.badge-before {
+  background: rgba(31, 27, 24, 0.88);
+  color: #EAE4DC;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+.indicator-badge.badge-after {
+  background: var(--gold-500);
+  color: #FFFFFF;
+  font-weight: 800;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.case-zoom-hint {
+  position: absolute;
+  inset: 0;
+  background: rgba(31, 27, 24, 0.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #FFFFFF;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 6;
+}
+
+.case-zoom-hint svg {
+  width: 24px;
+  height: 24px;
+  color: var(--gold-300);
+}
+
+.case-image-wrapper:hover .case-zoom-hint {
+  opacity: 1;
+}
+
+/* Detalhes do Caso */
+.case-info {
+  padding: 1.6rem 1.6rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.case-category-pill {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--gold-600);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.35rem;
+}
+
+.case-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+  line-height: 1.35;
+}
+
+.case-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.15rem;
+  flex-grow: 1;
+}
+
+.case-meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.35rem;
+}
+
+.meta-tag {
+  font-size: 0.725rem;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.case-action {
+  margin-top: auto;
+}
+
+.case-action .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-outline-gold {
+  background: transparent;
+  border: 1.5px solid var(--gold-500);
+  color: var(--gold-700);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-outline-gold:hover {
+  background: var(--gold-500);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-gold);
+}
+
+/* Botão Mais Casos */
+.more-cases-wrap {
+  text-align: center;
+  margin: 1rem 0 3rem;
+}
+
+.icon-toggle-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-fast);
+}
+
+.more-cases-wrap .btn[aria-expanded="true"] .icon-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.additional-cases-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 860px;
+  margin: 0 auto 3rem;
+  gap: 2rem;
+  animation: fadeInModal 0.35s ease forwards;
+}
+
+/* Faixa CTA dentro da Seção */
+.cases-cta-strip {
+  background: linear-gradient(135deg, var(--dark-bg) 0%, #28231F 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--dark-border);
+  padding: 2.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  box-shadow: var(--shadow-lg);
+  margin-top: 1.5rem;
+}
+
+.cases-cta-content h3 {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  color: var(--text-gold-light);
+  margin-bottom: 0.5rem;
+}
+
+.cases-cta-content p {
+  font-size: 0.95rem;
+  color: var(--gold-300);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.cases-cta-btn-wrap {
+  flex-shrink: 0;
+}
+
+/* Lightbox Modal de Ampliação */
+.case-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 15, 13, 0.94);
+  backdrop-filter: blur(8px);
+  z-index: 10001;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.case-lightbox-backdrop.show {
+  display: flex;
+  animation: fadeInModal 0.25s ease forwards;
+}
+
+.case-lightbox-content {
+  position: relative;
+  max-width: 720px;
+  width: 100%;
+  max-height: 94vh;
+  background: #1F1B18;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--dark-border);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  animation: zoomModal 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.case-lightbox-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.65);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.case-lightbox-close:hover {
+  background: var(--gold-500);
+  color: #FFFFFF;
+}
+
+.case-lightbox-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.case-lightbox-img-wrap {
+  position: relative;
+  width: 100%;
+  max-height: 65vh;
+  background: #141210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.lightbox-img {
+  width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+}
+
+.lightbox-indicators {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.case-lightbox-caption {
+  padding: 1.35rem 1.75rem;
+  background: #1A1715;
+  border-top: 1px solid rgba(197, 168, 128, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.case-lightbox-caption h4 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--text-gold-light);
+  margin: 0;
+}
+
+.lightbox-cfo-notice {
+  font-size: 0.775rem;
+  color: var(--gold-300);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Responsividade de Casos Clínicos */
+@media (max-width: 1080px) {
+  .clinical-cases-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 820px) {
+  .cases-cta-strip {
+    flex-direction: column;
+    padding: 2rem 1.75rem;
+    text-align: center;
+  }
+
+  .cases-cta-btn-wrap {
+    width: 100%;
+  }
+
+  .cases-cta-btn-wrap .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .clinical-cases-section {
+    padding: 4.5rem 0 3.5rem;
+  }
+
+  .clinical-cases-grid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .additional-cases-grid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .cfo-compliance-banner {
+    flex-direction: column;
+    padding: 1.15rem 1.25rem;
+  }
+}
+
+
 
