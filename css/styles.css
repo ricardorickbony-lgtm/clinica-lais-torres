@@ -1714,13 +1714,50 @@ button {
   height: 18px;
 }
 
+.footer-legal-badge {
+  margin-top: 1.25rem;
+  padding: 1rem 1.15rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(197, 168, 128, 0.2);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.company-legal-name {
+  color: var(--text-gold-light);
+  margin-bottom: 0.25rem;
+}
+
+.company-cnpj {
+  color: #FFFFFF;
+  margin-bottom: 0.35rem;
+}
+
+.cnpj-val {
+  color: var(--gold-400);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.legal-badge-link {
+  color: var(--gold-400) !important;
+  font-weight: 600;
+}
+
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 2rem;
-  font-size: 0.8rem;
+  padding: 2.5rem 0 2rem;
+  font-size: 0.8125rem;
 }
 
 .footer-bottom-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.footer-bottom-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1728,11 +1765,46 @@ button {
   gap: 1rem;
 }
 
-.footer-disclaimer {
-  max-width: 600px;
-  opacity: 0.6;
+.footer-legal-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.footer-legal-links a {
+  color: var(--gold-300);
+  font-size: 0.8rem;
+  transition: color var(--transition-fast);
+}
+
+.footer-legal-links a:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+.footer-legal-links .sep {
+  color: rgba(255, 255, 255, 0.3);
   font-size: 0.75rem;
-  line-height: 1.4;
+}
+
+.footer-disclaimer-box {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.25rem;
+}
+
+.footer-disclaimer {
+  opacity: 0.65;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.footer-disclaimer strong {
+  color: var(--gold-300);
+  opacity: 0.9;
 }
 
 /* ==========================================================================
