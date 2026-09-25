@@ -1,0 +1,2136 @@
+/* ==========================================================================
+   Dra. Laís Torres - Landing Page de Alta Conversão & SEO Local
+   Design System: Luxo, Estética Facial, Odontologia & Sofisticação
+   ========================================================================== */
+
+:root {
+  /* Paleta Primária - Ouro Acetinado / Champagne Bronze */
+  --gold-300: #E6D5BD;
+  --gold-400: #D4B993;
+  --gold-500: #C5A880;
+  --gold-600: #B38E65;
+  --gold-700: #8E6A42;
+  --gold-glow: rgba(197, 168, 128, 0.25);
+
+  /* Neutros Claros / Pele & Seda */
+  --bg-body: #FAF8F5;
+  --bg-surface: #FFFFFF;
+  --bg-surface-alt: #F4EFEA;
+  --bg-glass: rgba(255, 255, 255, 0.88);
+  --border-light: rgba(197, 168, 128, 0.22);
+  --border-subtle: #EAE4DC;
+
+  /* Neutros Escuros / Carvão & Tipografia Nobre */
+  --text-primary: #1F1B18;
+  --text-secondary: #564F4A;
+  --text-muted: #837A74;
+  --text-on-dark: #FFFFFF;
+  --text-gold-light: #EBDCC6;
+
+  /* Dark Theme Elements / Banner Nobre */
+  --dark-bg: #1A1715;
+  --dark-surface: #25211E;
+  --dark-border: rgba(197, 168, 128, 0.25);
+
+  /* WhatsApp & Interação */
+  --whatsapp: #25D366;
+  --whatsapp-hover: #20BA5A;
+  --whatsapp-glow: rgba(37, 211, 102, 0.35);
+
+  /* Tipografia */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+  /* Efeitos e Sombras */
+  --shadow-sm: 0 2px 8px rgba(31, 27, 24, 0.04);
+  --shadow-md: 0 8px 24px rgba(31, 27, 24, 0.08);
+  --shadow-lg: 0 16px 40px rgba(31, 27, 24, 0.12);
+  --shadow-gold: 0 8px 25px rgba(197, 168, 128, 0.3);
+
+  /* Transições Suaves */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 9999px;
+}
+
+/* Reset Universal & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Container Responsivo */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* ==========================================================================
+   1. Top Bar Informativa
+   ========================================================================== */
+.top-bar {
+  background-color: var(--dark-bg);
+  color: var(--text-gold-light);
+  font-size: 0.8125rem;
+  border-bottom: 1px solid var(--dark-border);
+  padding: 0.5rem 0;
+}
+
+.top-bar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.top-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.top-bar-item .icon {
+  width: 14px;
+  height: 14px;
+  color: var(--gold-400);
+}
+
+.badge-cro {
+  background: rgba(197, 168, 128, 0.15);
+  border: 1px solid var(--gold-600);
+  border-radius: var(--radius-pill);
+  padding: 0.15rem 0.75rem;
+  color: #FFFFFF;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.top-bar-link a {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--text-gold-light);
+  opacity: 0.9;
+}
+.top-bar-link a:hover {
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   2. Header & Sticky Nav
+   ========================================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
+}
+
+.site-header.scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-sm);
+  padding: 0.25rem 0;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 76px;
+}
+
+/* Brand Logo */
+.brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-600);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+.brand-tag {
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Main Navigation */
+.main-nav .nav-list {
+  display: flex;
+  gap: 1.75rem;
+}
+
+.nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  position: relative;
+  padding: 0.4rem 0;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--gold-500);
+  transition: width var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--gold-600);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.header-action {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Mobile Toggle Hamburger */
+.mobile-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+}
+
+.mobile-toggle .bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-primary);
+  border-radius: 2px;
+  transition: var(--transition-fast);
+}
+
+/* ==========================================================================
+   3. Botões & Componentes de Ação
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  transition: all var(--transition-normal);
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.btn-sm {
+  padding: 0.55rem 1.25rem;
+  font-size: 0.875rem;
+}
+
+.btn-lg {
+  padding: 0.85rem 1.85rem;
+  font-size: 1rem;
+}
+
+.btn-xl {
+  padding: 1.1rem 2.5rem;
+  font-size: 1.125rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-600) 100%);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--gold-400) 0%, var(--gold-500) 100%);
+  box-shadow: 0 10px 30px rgba(197, 168, 128, 0.45);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(4px);
+}
+
+.btn-secondary:hover {
+  border-color: var(--gold-500);
+  color: var(--gold-700);
+  background: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #DFCAAC 0%, #C5A880 100%);
+  color: var(--dark-bg);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  font-weight: 700;
+}
+
+.btn-gold:hover {
+  background: #FFFFFF;
+  color: var(--dark-bg);
+  transform: translateY(-2px);
+}
+
+.btn-outline-dark {
+  border: 1px solid var(--text-muted);
+  color: var(--text-primary);
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-outline-dark:hover {
+  border-color: var(--gold-600);
+  color: var(--gold-600);
+  background: rgba(197, 168, 128, 0.05);
+}
+
+.icon-btn {
+  width: 18px;
+  height: 18px;
+}
+
+.icon-btn-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-fast);
+}
+
+.btn:hover .icon-btn-arrow {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   4. Hero Section
+   ========================================================================== */
+.hero-section {
+  position: relative;
+  padding: 4.5rem 0 5rem;
+  background: radial-gradient(circle at 10% 10%, #FFFDFB 0%, var(--bg-body) 60%, #F5ECE2 100%);
+  overflow: hidden;
+}
+
+.hero-decor {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.decor-top-right {
+  top: -150px;
+  right: -100px;
+  background: #EED7C0;
+}
+
+.decor-bottom-left {
+  bottom: -150px;
+  left: -100px;
+  background: #F3E4D5;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 3.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(197, 168, 128, 0.12);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold-700);
+  margin-bottom: 1.5rem;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--gold-600);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(179, 142, 101, 0.25);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(179, 142, 101, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(179, 142, 101, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(179, 142, 101, 0); }
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: 2.85rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.highlight-serif {
+  font-style: italic;
+  color: var(--gold-600);
+  font-weight: 500;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 2.25rem;
+  max-width: 580px;
+}
+
+.hero-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero-trust-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.trust-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.trust-stars {
+  color: #F5A623;
+  letter-spacing: 2px;
+  font-size: 0.95rem;
+}
+
+.trust-text {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.trust-highlight {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--gold-700);
+}
+
+.trust-divider {
+  width: 1px;
+  height: 32px;
+  background-color: var(--border-subtle);
+}
+
+/* Hero Specialist Visual Glass Card */
+.hero-media {
+  display: flex;
+  justify-content: center;
+}
+
+.card-hero-glass {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 245, 238, 0.85) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2rem;
+  width: 100%;
+  max-width: 430px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  transition: transform var(--transition-normal);
+}
+
+.card-hero-glass:hover {
+  transform: translateY(-4px);
+}
+
+.specialist-avatar-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.avatar-photo-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--gold-400) 0%, var(--gold-600) 100%);
+  box-shadow: var(--shadow-md), 0 0 25px rgba(197, 168, 128, 0.45);
+}
+
+.avatar-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 20%;
+  border: 3px solid #FFFFFF;
+}
+
+/* Imagens dos Procedimentos */
+.procedure-image-wrap {
+  width: 100%;
+  height: 190px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.procedure-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.procedure-card:hover .procedure-img {
+  transform: scale(1.05);
+}
+
+/* Foto da Especialista no Sobre */
+.about-photo-wrapper {
+  width: 100%;
+  height: 320px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 1.75rem;
+  box-shadow: var(--shadow-md);
+  border: 3px solid #FFFFFF;
+}
+
+.about-specialist-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  transition: transform var(--transition-normal);
+}
+
+.about-card-frame:hover .about-specialist-photo {
+  transform: scale(1.03);
+}
+
+/* Espaço da Clínica Consultório */
+.clinic-space-card {
+  margin-top: 3.5rem;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  box-shadow: var(--shadow-md);
+}
+
+.clinic-space-img-wrap {
+  position: relative;
+  min-height: 340px;
+}
+
+.clinic-space-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.clinic-space-content {
+  padding: 2.75rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .clinic-space-card {
+    grid-template-columns: 1fr;
+  }
+  .clinic-space-img-wrap {
+    min-height: 240px;
+  }
+}
+
+.card-hero-body {
+  text-align: center;
+}
+
+.card-hero-name {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.card-hero-subtitle {
+  font-size: 0.875rem;
+  color: var(--gold-600);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+}
+
+.card-hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.tag {
+  background: var(--bg-surface-alt);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+}
+
+.card-hero-quote {
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  background: rgba(197, 168, 128, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.card-hero-location {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.icon-inline {
+  width: 14px;
+  height: 14px;
+  color: var(--gold-600);
+}
+
+/* ==========================================================================
+   5. Proof Strip (Benefícios & Biossegurança)
+   ========================================================================== */
+.proof-strip {
+  background: #FFFFFF;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 2.25rem 0;
+}
+
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.proof-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.proof-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: rgba(197, 168, 128, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-600);
+}
+
+.proof-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.proof-text strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.proof-text span {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   6. Seções Padrão & Títulos
+   ========================================================================== */
+.section {
+  padding: 5.5rem 0;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3.5rem;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  color: var(--gold-600);
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 2.35rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   7. Procedimentos (Cards de Serviços)
+   ========================================================================== */
+.procedures-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.procedure-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 1.85rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.procedure-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold-400);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-featured {
+  border: 1.5px solid var(--gold-500);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF6F0 100%);
+}
+
+.procedure-badge {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  background: rgba(197, 168, 128, 0.15);
+  color: var(--gold-700);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+}
+
+.badge-gold {
+  background: var(--gold-600);
+  color: #FFFFFF;
+}
+
+.procedure-header {
+  margin-bottom: 1.25rem;
+}
+
+.procedure-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: rgba(197, 168, 128, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-600);
+  margin-bottom: 1.25rem;
+}
+
+.procedure-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.procedure-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.procedure-desc {
+  font-size: 0.925rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.procedure-points {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.procedure-points li {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.procedure-points li::before {
+  content: "•";
+  color: var(--gold-600);
+  font-size: 1.25rem;
+  position: absolute;
+  left: 0;
+  top: -0.2rem;
+}
+
+.procedure-footer {
+  margin-top: auto;
+}
+
+.card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--gold-700);
+  padding: 0.75rem 1rem;
+  background: var(--bg-surface-alt);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.card-btn:hover {
+  background: var(--gold-600);
+  color: #FFFFFF;
+}
+
+.card-btn .arrow {
+  transition: transform var(--transition-fast);
+}
+
+.card-btn:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   8. Sobre a Especialista
+   ========================================================================== */
+.about-section {
+  background: #FFFFFF;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.about-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.about-card-frame {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: linear-gradient(135deg, #FAF7F2 0%, #F0E6D8 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  padding: 3rem 2.25rem;
+}
+
+.about-initials-badge {
+  position: absolute;
+  top: -16px;
+  right: 24px;
+  background: var(--dark-bg);
+  color: var(--text-gold-light);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 1.1rem;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: var(--shadow-md);
+}
+
+.about-initials-badge strong {
+  color: #FFFFFF;
+  letter-spacing: 0.05em;
+}
+
+.about-badge-pioneer {
+  display: inline-block;
+  background: var(--gold-600);
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1.25rem;
+}
+
+.about-card-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.about-card-subtitle {
+  font-size: 0.95rem;
+  color: var(--gold-700);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.about-divider {
+  width: 50px;
+  height: 2px;
+  background: var(--gold-500);
+  margin-bottom: 1.5rem;
+}
+
+.about-highlights li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.85rem;
+  line-height: 1.45;
+}
+
+.about-highlights .check {
+  color: var(--gold-600);
+  font-weight: 700;
+}
+
+.about-content .about-p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 1.25rem;
+}
+
+.about-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 2.25rem 0;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-num {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--gold-600);
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+/* ==========================================================================
+   9. Diferenciais da Clínica
+   ========================================================================== */
+.differentials-section {
+  background: var(--bg-surface-alt);
+}
+
+.differentials-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.75rem;
+}
+
+.diff-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2.25rem 1.65rem;
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.diff-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-400);
+  box-shadow: var(--shadow-md);
+}
+
+.diff-number {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--gold-300);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.diff-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  line-height: 1.35;
+}
+
+.diff-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   10. Depoimentos (Slider & Google Badge)
+   ========================================================================== */
+.testimonials-section {
+  background: #FFFFFF;
+  overflow: hidden;
+}
+
+.testimonials-slider-container {
+  position: relative;
+  max-width: 1050px;
+  margin: 0 auto 3rem;
+}
+
+.testimonials-track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  transition: transform var(--transition-normal);
+}
+
+.testimonial-card {
+  background: var(--bg-body);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.testimonial-rating {
+  margin-bottom: 1.25rem;
+}
+
+.testimonial-rating .stars {
+  color: #F5A623;
+  letter-spacing: 2px;
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-rating .source {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.testimonial-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.author-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-400), var(--gold-600));
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.author-info strong {
+  display: block;
+  font-size: 0.925rem;
+  color: var(--text-primary);
+}
+
+.author-info span {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+}
+
+.slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.slider-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all var(--transition-fast);
+}
+
+.slider-btn:hover {
+  background: var(--gold-600);
+  color: #FFFFFF;
+  border-color: var(--gold-600);
+}
+
+.slider-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slider-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-subtle);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.slider-dots .dot.active {
+  background: var(--gold-600);
+  width: 24px;
+  border-radius: var(--radius-pill);
+}
+
+/* Google Badge Box */
+.google-badge-box {
+  max-width: 650px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  padding: 0.85rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.google-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.google-badge-info strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.google-badge-info span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   11. FAQ Section (Accordion)
+   ========================================================================== */
+.faq-section {
+  background: var(--bg-body);
+}
+
+.faq-container {
+  max-width: 800px;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.faq-item.active {
+  border-color: var(--gold-400);
+  box-shadow: var(--shadow-sm);
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1.35rem 1.65rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.faq-icon {
+  font-size: 1.5rem;
+  color: var(--gold-600);
+  transition: transform var(--transition-normal);
+  line-height: 1;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-normal);
+  padding: 0 1.65rem;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 300px;
+  padding-bottom: 1.5rem;
+}
+
+.faq-answer p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   12. Localização & Mapa
+   ========================================================================== */
+.location-section {
+  background: #FFFFFF;
+}
+
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.location-text {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  margin-bottom: 2rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.contact-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(197, 168, 128, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-600);
+  flex-shrink: 0;
+}
+
+.contact-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.contact-item strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.contact-item p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.btn-copy-address {
+  font-size: 0.75rem;
+  color: var(--gold-700);
+  font-weight: 600;
+  text-decoration: underline;
+  margin-top: 0.25rem;
+  cursor: pointer;
+}
+
+.map-card-wrapper {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.map-overlay-badge {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  background: rgba(26, 23, 21, 0.92);
+  color: #FFFFFF;
+  padding: 0.65rem 1.15rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.8125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.pulse-pin {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  box-shadow: 0 0 0 3px rgba(212, 185, 147, 0.4);
+}
+
+/* ==========================================================================
+   13. Final CTA Banner
+   ========================================================================== */
+.final-cta-section {
+  background: var(--bg-body);
+  padding: 3rem 0 6rem;
+}
+
+.final-cta-card {
+  background: linear-gradient(135deg, var(--dark-bg) 0%, #2A2420 100%);
+  border-radius: var(--radius-lg);
+  padding: 4.5rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  color: #FFFFFF;
+  box-shadow: var(--shadow-lg);
+}
+
+.final-cta-decor {
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 140%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(197, 168, 128, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.text-gold-light {
+  color: var(--gold-300);
+}
+
+.final-cta-title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  line-height: 1.25;
+  font-weight: 600;
+  max-width: 700px;
+  margin: 0.75rem auto 1.5rem;
+}
+
+.final-cta-text {
+  font-size: 1.1rem;
+  color: var(--text-gold-light);
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.65;
+}
+
+.final-cta-footnote {
+  margin-top: 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--text-gold-light);
+  opacity: 0.65;
+}
+
+/* ==========================================================================
+   14. Footer
+   ========================================================================== */
+.site-footer {
+  background: var(--dark-bg);
+  color: #B5ACA4;
+  padding: 5rem 0 2rem;
+  border-top: 1px solid var(--dark-border);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.footer-logo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+}
+
+.footer-logo .brand-name {
+  color: #FFFFFF;
+}
+
+.footer-bio {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.footer-cro {
+  font-size: 0.8125rem;
+  color: var(--text-gold-light);
+  line-height: 1.5;
+}
+
+.footer-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: #FFFFFF;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.05em;
+}
+
+.footer-links li {
+  margin-bottom: 0.65rem;
+}
+
+.footer-links a {
+  font-size: 0.875rem;
+  color: #B5ACA4;
+}
+
+.footer-links a:hover {
+  color: var(--gold-400);
+}
+
+.footer-contact-p {
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.social-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  transition: all var(--transition-fast);
+}
+
+.social-icon:hover {
+  background: var(--gold-600);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.social-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 2rem;
+  font-size: 0.8rem;
+}
+
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-disclaimer {
+  max-width: 600px;
+  opacity: 0.6;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   15. Botão Flutuante de WhatsApp
+   ========================================================================== */
+.floating-whatsapp-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+}
+
+.floating-whatsapp-btn {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--whatsapp);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px var(--whatsapp-glow);
+  position: relative;
+  transition: transform var(--transition-fast);
+}
+
+.floating-whatsapp-btn:hover {
+  transform: scale(1.08);
+  background: var(--whatsapp-hover);
+}
+
+.whatsapp-icon-wrapper svg {
+  width: 34px;
+  height: 34px;
+}
+
+.online-indicator {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  background-color: #2ECC71;
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+}
+
+.floating-tooltip {
+  position: absolute;
+  right: 74px;
+  background: var(--dark-bg);
+  color: #FFFFFF;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all var(--transition-fast);
+}
+
+.floating-whatsapp-container:hover .floating-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ==========================================================================
+   16. Toast Notification
+   ========================================================================== */
+.toast-notification {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--dark-bg);
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid var(--gold-600);
+  box-shadow: var(--shadow-lg);
+  z-index: 10000;
+  opacity: 0;
+  transition: all var(--transition-normal);
+  pointer-events: none;
+}
+
+.toast-notification.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ==========================================================================
+   17. Responsividade Mobile (Media Queries)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 3rem;
+  }
+
+  .badge-pill {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta-group {
+    justify-content: center;
+  }
+
+  .hero-trust-bar {
+    justify-content: center;
+  }
+
+  .procedures-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .about-divider {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .about-action {
+    display: flex;
+    justify-content: center;
+  }
+
+  .differentials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .testimonials-track {
+    grid-template-columns: 1fr;
+  }
+
+  .location-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .top-bar-content {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .top-bar-link {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: flex;
+  }
+
+  .main-nav {
+    position: fixed;
+    top: 76px;
+    left: 0;
+    width: 100%;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--border-light);
+    padding: 1.5rem 2rem;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-150%);
+    transition: transform var(--transition-normal);
+  }
+
+  .main-nav.open {
+    transform: translateY(0);
+  }
+
+  .main-nav .nav-list {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .header-action .cta-whatsapp {
+    display: none;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .proof-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .procedures-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .differentials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .final-cta-card {
+    padding: 3rem 1.5rem;
+  }
+
+  .final-cta-title {
+    font-size: 1.85rem;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .footer-bottom-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .floating-whatsapp-container {
+    bottom: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .floating-tooltip {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   15. Persona da Especialista & Filosofia Clínica (Dra. Laís Torres)
+   ========================================================================== */
+.persona-quote {
+  position: relative;
+  background: rgba(197, 168, 128, 0.08);
+  border-left: 3px solid var(--gold-600);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0 1.75rem;
+}
+
+.persona-quote p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.persona-quote .quote-author {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold-700);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.persona-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin: 1.75rem 0;
+}
+
+.persona-pillar-item {
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem 1rem;
+  transition: all var(--transition-fast);
+}
+
+.persona-pillar-item:hover {
+  border-color: var(--gold-400);
+  background: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+}
+
+.pillar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.pillar-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(197, 168, 128, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-700);
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pillar-title {
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pillar-desc {
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================================================
+   16. Galeria Real do Consultório & Atendimento (Google Meu Negócio)
+   ========================================================================== */
+.clinic-gallery-section {
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-surface-alt) 100%);
+  padding: 5.5rem 0;
+}
+
+.clinic-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.clinic-gallery-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-normal);
+}
+
+.clinic-gallery-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold-400);
+  box-shadow: var(--shadow-lg);
+}
+
+.clinic-gallery-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  background: #2A2420;
+}
+
+.clinic-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.clinic-gallery-card:hover .clinic-gallery-img {
+  transform: scale(1.05);
+}
+
+.clinic-gallery-tag {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(26, 23, 21, 0.88);
+  color: var(--text-gold-light);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  letter-spacing: 0.03em;
+}
+
+.clinic-gallery-body {
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.clinic-gallery-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+}
+
+.clinic-gallery-text {
+  font-size: 0.885rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.clinic-gallery-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.785rem;
+  font-weight: 600;
+  color: var(--gold-700);
+  background: rgba(197, 168, 128, 0.12);
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-pill);
+  width: fit-content;
+}
+
+.clinic-gallery-footer {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 2.25rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.clinic-footer-info h4 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.clinic-footer-info p {
+  font-size: 0.925rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.clinic-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .clinic-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  .clinic-gallery-footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.75rem 1.25rem;
+  }
+  .clinic-footer-actions {
+    justify-content: center;
+  }
+  .persona-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
