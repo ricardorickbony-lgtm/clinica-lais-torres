@@ -8,20 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Configurações Globais Editáveis (WhatsApp e Dados Comerciais)
   // =========================================================================
   const CLINIC_CONFIG = {
-    // Altere este número para o WhatsApp comercial oficial (formato internacional sem + ou traços)
-    // Ex: "5511987654321"
     whatsappNumber: "5511992108168",
     clinicName: "Dra. Laís Torres - Harmonização Orofacial",
     razaoSocial: "LT LAÍS TORRES ODONTOLOGIA E ESTÉTICA LTDA",
     cnpj: "47.183.038/0001-00",
     crosp: "109221",
     addressText: "Av. Palmares, 884, Loja 02 - Vila Palmares, Santo André – SP, CEP 09061-410",
-    defaultMessage: "Olá, Dra. Laís Torres! Vim pelo site oficial e gostaria de agendar uma consulta de avaliação em Santo André."
+    defaultMessage: "Olá, Dra. Laís Torres! Vim pelo site oficial e gostaria de agendar uma consulta de avaliação em Santo André.",
+    // Horários Oficiais sincronizados com Google Meu Negócio e Recepção
+    schedule: {
+      timezone: "America/Sao_Paulo",
+      // Segunda a Sexta: 09:00 às 18:30 (540 a 1110 minutos a partir de 00:00)
+      weekdayOpen: 9 * 60,
+      weekdayClose: 18 * 60 + 30,
+      // Sábado: 09:00 às 13:00 (540 a 780 minutos)
+      saturdayOpen: 9 * 60,
+      saturdayClose: 13 * 60
+    }
   };
 
   // Atualiza dinamicamente todos os links de WhatsApp caso o número seja alterado no config
   const updateWhatsAppLinks = () => {
-    const whatsappButtons = document.querySelectorAll('.cta-whatsapp');
+    const whatsappButtons = document.querySelectorAll('.cta-whatsapp:not(#btnConciergeAction)');
     whatsappButtons.forEach(btn => {
       const currentHref = btn.getAttribute('href');
       if (currentHref && currentHref.includes('wa.me')) {
@@ -30,11 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.setAttribute('href', `https://wa.me/${CLINIC_CONFIG.whatsappNumber}?text=${textParam}`);
       }
     });
-
-    const floatingBtn = document.querySelector('.floating-whatsapp-btn');
-    if (floatingBtn) {
-      floatingBtn.setAttribute('href', `https://wa.me/${CLINIC_CONFIG.whatsappNumber}?text=${encodeURIComponent(CLINIC_CONFIG.defaultMessage)}`);
-    }
   };
   updateWhatsAppLinks();
 
@@ -548,6 +551,238 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // =========================================================================
+  // 17. Smart WhatsApp Concierge & Horários de Atendimento em Tempo Real
+  // =========================================================================
+  const initSmartWhatsAppWidget = () => {
+    const conciergeCard = document.getElementById('whatsappConciergeCard');
+    const floatingPill = document.getElementById('floatingStatusPill');
+    const floatingPillBeacon = document.getElementById('floatingPillBeacon');
+    const floatingPillText = document.getElementById('floatingPillText');
+    const floatingBtn = document.getElementById('floatingWhatsappBtn');
+    const floatingBtnIndicator = document.getElementById('floatingBtnIndicator');
+    const conciergeAvatarDot = document.getElementById('conciergeAvatarDot');
+    const conciergeStatusBeacon = document.getElementById('conciergeStatusBeacon');
+    const conciergeStatusLabel = document.getElementById('conciergeStatusLabel');
+    const conciergeChatMsg = document.getElementById('conciergeChatMsg');
+    const conciergeChatTime = document.getElementById('conciergeChatTime');
+    const conciergeScheduleDetail = document.getElementById('conciergeScheduleDetail');
+    const btnConciergeAction = document.getElementById('btnConciergeAction');
+    const conciergeActionText = document.getElementById('conciergeActionText');
+    const btnCloseConcierge = document.getElementById('btnCloseConcierge');
+    const container = document.getElementById('floatingWhatsapp');
+
+    if (!floatingBtn) return;
+
+    // Retorna a data e hora atual no fuso horário de São Paulo (Brasília - UTC-3)
+    const getSaoPauloDate = () => {
+      try {
+        const now = new Date();
+        const spString = now.toLocaleString("en-US", { timeZone: CLINIC_CONFIG.schedule.timezone });
+        return new Date(spString);
+      } catch (e) {
+        return new Date();
+      }
+    };
+
+    // Avalia o status exato da clínica
+    const evaluateStatus = () => {
+      const spDate = getSaoPauloDate();
+      const day = spDate.getDay(); // 0: Dom, 1: Seg, ..., 6: Sáb
+      const totalMinutes = spDate.getHours() * 60 + spDate.getMinutes();
+      const sched = CLINIC_CONFIG.schedule;
+
+      let isOpen = false;
+      let pillText = "";
+      let statusLabel = "";
+      let scheduleDetail = "";
+      let chatMsg = "";
+      let actionText = "";
+      let whatsappText = "";
+
+      if (day >= 1 && day <= 5) {
+        // Segunda a Sexta
+        if (totalMinutes >= sched.weekdayOpen && totalMinutes < sched.weekdayClose) {
+          isOpen = true;
+          pillText = "Online agora • Resposta rápida";
+          statusLabel = "Online agora (Atendimento até 18:30)";
+          scheduleDetail = "Atendimento hoje: das 09h às 18h30";
+          chatMsg = "Olá! 👋 Nossa equipe está disponível no WhatsApp agora. Como posso te ajudar com a sua avaliação em Santo André?";
+          actionText = "Conversar no WhatsApp Agora";
+          whatsappText = "Olá, Dra. Laís Torres! Estou no site e gostaria de agendar uma consulta de avaliação em Santo André.";
+        } else if (totalMinutes < sched.weekdayOpen) {
+          isOpen = false;
+          pillText = "Fora do expediente • Deixe sua mensagem";
+          statusLabel = "Fora do expediente (Abertura às 09:00)";
+          scheduleDetail = "Abrimos hoje às 09:00";
+          chatMsg = "Olá! 👋 Nossa clínica abre hoje às 09:00, mas você já pode enviar sua mensagem agora. Responderemos com prioridade na abertura!";
+          actionText = "Deixar Mensagem no WhatsApp";
+          whatsappText = "Olá, Dra. Laís! Deixo minha mensagem antes da abertura para retorno assim que o expediente iniciar.";
+        } else {
+          isOpen = false;
+          pillText = "Fora do expediente • Deixe sua mensagem";
+          if (day === 5) {
+            statusLabel = "Fechado por hoje • Retornamos amanhã";
+            scheduleDetail = "Retornamos amanhã (Sábado) às 09:00";
+            chatMsg = "Olá! 👋 Nosso atendimento presencial de sexta encerrou. Retornamos amanhã às 09:00. Deixe sua mensagem agora mesmo!";
+          } else {
+            statusLabel = "Fechado por hoje • Retornamos amanhã";
+            scheduleDetail = "Retornamos amanhã às 09:00";
+            chatMsg = "Olá! 👋 Nosso atendimento encerrou por hoje. Retornamos amanhã às 09:00. Pode deixar sua mensagem que responderemos logo cedo!";
+          }
+          actionText = "Deixar Mensagem no WhatsApp";
+          whatsappText = "Olá, Dra. Laís Torres! Vi que estão fora do horário de atendimento, mas deixo minha mensagem para retorno assim que abrirem.";
+        }
+      } else if (day === 6) {
+        // Sábado
+        if (totalMinutes >= sched.saturdayOpen && totalMinutes < sched.saturdayClose) {
+          isOpen = true;
+          pillText = "Online agora • Plantão de Sábado";
+          statusLabel = "Online agora (Atendimento até 13:00)";
+          scheduleDetail = "Atendimento hoje (Sábado): das 09h às 13h";
+          chatMsg = "Olá! 👋 Estamos em atendimento hoje (Sábado) até às 13h. Gostaria de tirar dúvidas ou agendar sua avaliação?";
+          actionText = "Falar no WhatsApp Agora";
+          whatsappText = "Olá, Dra. Laís Torres! Gostaria de falar sobre agendamento neste sábado.";
+        } else if (totalMinutes < sched.saturdayOpen) {
+          isOpen = false;
+          pillText = "Fora do expediente • Deixe sua mensagem";
+          statusLabel = "Fora do expediente (Abertura às 09:00)";
+          scheduleDetail = "Abrimos hoje (Sábado) às 09:00";
+          chatMsg = "Olá! 👋 Abrimos hoje às 09:00. Deixe sua mensagem que nossa recepção responderá logo no início do plantão!";
+          actionText = "Deixar Mensagem no WhatsApp";
+          whatsappText = "Olá, Dra. Laís! Deixo minha mensagem para o plantão de sábado.";
+        } else {
+          isOpen = false;
+          pillText = "Fechado agora • Deixe sua mensagem";
+          statusLabel = "Fechado no fim de semana";
+          scheduleDetail = "Retornamos segunda-feira às 09:00";
+          chatMsg = "Olá! 👋 Nosso atendimento de sábado encerrou. Retornamos na segunda-feira às 09:00. Deixe sua mensagem e garantiremos sua prioridade na fila!";
+          actionText = "Deixar Mensagem no WhatsApp";
+          whatsappText = "Olá, Dra. Laís Torres! Deixo minha mensagem no final de semana para retorno na segunda-feira.";
+        }
+      } else {
+        // Domingo
+        isOpen = false;
+        pillText = "Fechado aos domingos • Deixe recado";
+        statusLabel = "Fechado aos domingos";
+        scheduleDetail = "Retornamos amanhã (Segunda) às 09:00";
+        chatMsg = "Olá! 👋 Aos domingos a clínica física está em pausa, mas nosso canal de WhatsApp recebe mensagens normalmente. Responderemos logo cedo na segunda-feira!";
+        actionText = "Deixar Mensagem no WhatsApp";
+        whatsappText = "Olá, Dra. Laís Torres! Gostaria de deixar meu pré-agendamento de domingo para retorno na segunda-feira.";
+      }
+
+      const timeFormatted = spDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const targetUrl = `https://wa.me/${CLINIC_CONFIG.whatsappNumber}?text=${encodeURIComponent(whatsappText)}`;
+
+      // Atualiza textos
+      if (floatingPillText) floatingPillText.textContent = pillText;
+      if (conciergeStatusLabel) conciergeStatusLabel.textContent = statusLabel;
+      if (conciergeChatMsg) conciergeChatMsg.textContent = chatMsg;
+      if (conciergeChatTime) conciergeChatTime.textContent = timeFormatted;
+      if (conciergeScheduleDetail) conciergeScheduleDetail.textContent = scheduleDetail;
+      if (conciergeActionText) conciergeActionText.textContent = actionText;
+
+      // Atualiza links
+      if (btnConciergeAction) btnConciergeAction.setAttribute('href', targetUrl);
+      if (floatingBtn) floatingBtn.setAttribute('href', targetUrl);
+
+      // Atualiza classes visuais (online vs offline)
+      const stateClass = isOpen ? 'online' : 'offline';
+      const removeClass = isOpen ? 'offline' : 'online';
+
+      [floatingPillBeacon, floatingBtnIndicator, conciergeAvatarDot, conciergeStatusBeacon].forEach(el => {
+        if (el) {
+          el.classList.add(stateClass);
+          el.classList.remove(removeClass);
+        }
+      });
+    };
+
+    // Executa avaliação inicial
+    evaluateStatus();
+
+    // Reavalia a cada 30 segundos para transição instantânea quando a clínica abrir/fechar
+    setInterval(evaluateStatus, 30000);
+
+    // Controles de Abertura / Fechamento do Card Concierge
+    const openConcierge = () => {
+      if (conciergeCard) {
+        conciergeCard.classList.add('open');
+        conciergeCard.setAttribute('aria-hidden', 'false');
+      }
+    };
+
+    const closeConcierge = () => {
+      if (conciergeCard) {
+        conciergeCard.classList.remove('open');
+        conciergeCard.setAttribute('aria-hidden', 'true');
+      }
+    };
+
+    const toggleConcierge = (e) => {
+      if (e) e.preventDefault();
+      if (conciergeCard && conciergeCard.classList.contains('open')) {
+        closeConcierge();
+      } else {
+        openConcierge();
+      }
+    };
+
+    // Ao clicar na pílula de status, abre/fecha o concierge
+    if (floatingPill) {
+      floatingPill.addEventListener('click', toggleConcierge);
+      floatingPill.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleConcierge();
+        }
+      });
+    }
+
+    // Botão de fechar do card
+    if (btnCloseConcierge) {
+      btnCloseConcierge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeConcierge();
+        sessionStorage.setItem('concierge_dismissed', 'true');
+      });
+    }
+
+    // Fechar ao clicar fora do container
+    document.addEventListener('click', (e) => {
+      if (container && !container.contains(e.target)) {
+        closeConcierge();
+      }
+    });
+
+    // Fechar com a tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeConcierge();
+    });
+
+    // Auto-apresentação delicada (após 10 segundos na primeira visita da sessão)
+    setTimeout(() => {
+      if (!sessionStorage.getItem('concierge_dismissed') && conciergeCard && !conciergeCard.classList.contains('open')) {
+        openConcierge();
+        // Fecha automaticamente após 8 segundos se o usuário não interagir
+        setTimeout(() => {
+          if (!sessionStorage.getItem('concierge_interacted')) {
+            closeConcierge();
+          }
+        }, 8000);
+      }
+    }, 10000);
+
+    if (btnConciergeAction) {
+      btnConciergeAction.addEventListener('click', () => {
+        sessionStorage.setItem('concierge_interacted', 'true');
+      });
+    }
+  };
+
+  // Inicializa o Smart WhatsApp Widget
+  initSmartWhatsAppWidget();
+
   // Log informativo para o desenvolvedor
-  console.log("%c Dra. Laís Torres | Landing Page, Cookies & Casos Clínicos Carregados ", "background: #C5A880; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;");
+  console.log("%c Dra. Laís Torres | Landing Page, Cookies & Smart Concierge Carregados ", "background: #C5A880; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;");
 });

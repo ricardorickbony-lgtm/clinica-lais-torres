@@ -1500,14 +1500,62 @@
     </div>
   </footer>
 
-  <!-- Floating WhatsApp CTA Button -->
+  <!-- Floating Smart WhatsApp Widget (Sincronizado com Horários da Clínica) -->
   <div class="floating-whatsapp-container" id="floatingWhatsapp">
-    <a href="https://wa.me/5511992108168?text=Ol%C3%A1%2C%20Dra.%20La%C3%ADs!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20em%20Santo%20Andr%C3%A9." target="_blank" rel="noopener noreferrer" class="floating-whatsapp-btn" aria-label="Falar pelo WhatsApp com a Dra. Laís Torres">
-      <span class="floating-tooltip">Agendar pelo WhatsApp</span>
+    <!-- Card Concierge Interativo (Expandível) -->
+    <div class="whatsapp-concierge-card" id="whatsappConciergeCard" aria-hidden="true">
+      <div class="concierge-header">
+        <div class="concierge-profile">
+          <div class="concierge-avatar-wrapper">
+            <img src="assets/dra-lais-torres.jpg" alt="Dra. Laís Torres" class="concierge-avatar" width="48" height="48" loading="lazy">
+            <span class="concierge-avatar-dot" id="conciergeAvatarDot"></span>
+          </div>
+          <div class="concierge-info">
+            <div class="concierge-name-row">
+              <strong class="concierge-name">Dra. Laís Torres</strong>
+              <svg class="verified-badge-icon" viewBox="0 0 20 20" fill="#C5A880" aria-label="Verificada"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            </div>
+            <span class="concierge-tag">Harmonização Facial • CROSP 109221</span>
+            <div class="concierge-status-pill" id="conciergeStatusPill">
+              <span class="status-pulse-beacon" id="conciergeStatusBeacon"></span>
+              <span class="status-pill-label" id="conciergeStatusLabel">Carregando status...</span>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-close-concierge" id="btnCloseConcierge" aria-label="Fechar janela de atendimento">&times;</button>
+      </div>
+
+      <div class="concierge-body">
+        <div class="concierge-chat-bubble">
+          <p id="conciergeChatMsg">Olá! 👋 Como posso te ajudar com a sua avaliação estética em Santo André?</p>
+          <span class="chat-bubble-time" id="conciergeChatTime"></span>
+        </div>
+        <div class="concierge-schedule-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="schedule-clock-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span id="conciergeScheduleDetail">Seg a Sex: 09h às 18h30 • Sáb: 09h às 13h</span>
+        </div>
+      </div>
+
+      <div class="concierge-footer">
+        <a href="https://wa.me/5511992108168" target="_blank" rel="noopener noreferrer" class="btn-concierge-action cta-whatsapp" id="btnConciergeAction">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="concierge-btn-icon" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.79 14.07c-.24.68-1.4 1.27-1.95 1.34-.51.07-1.17.1-3.39-.81-2.84-1.18-4.66-4.09-4.8-4.28-.14-.19-1.16-1.54-1.16-2.94 0-1.4.73-2.09 1-2.37.24-.26.54-.33.72-.33.18 0 .36 0 .52.01.17.01.4.06.61.52.24.53.82 2 .89 2.15.07.15.11.33.02.53-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.14-.29.3-.12.59.17.29.74 1.22 1.6 1.98 1.1 1 2.03 1.31 2.32 1.45.29.14.46.12.63-.07.17-.19.74-.86.94-1.15.2-.29.4-.24.67-.14.28.1 1.75.83 2.05.98.3.15.5.22.57.34.07.13.07.74-.17 1.42z"/></svg>
+          <span id="conciergeActionText">Falar no WhatsApp Agora</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Pílula de Status Dinâmica (Desktop & Tablet) -->
+    <div class="floating-status-pill" id="floatingStatusPill" role="button" tabindex="0" aria-label="Ver horários e atendimento WhatsApp">
+      <span class="status-pulse-beacon" id="floatingPillBeacon"></span>
+      <span class="status-pill-text" id="floatingPillText">Online agora • Resposta rápida</span>
+    </div>
+
+    <!-- Botão Redondo Principal WhatsApp (FAB) -->
+    <a href="https://wa.me/5511992108168" target="_blank" rel="noopener noreferrer" class="floating-whatsapp-btn" id="floatingWhatsappBtn" aria-label="Abrir conversa no WhatsApp com a Dra. Laís Torres">
       <div class="whatsapp-icon-wrapper">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.79 14.07c-.24.68-1.4 1.27-1.95 1.34-.51.07-1.17.1-3.39-.81-2.84-1.18-4.66-4.09-4.8-4.28-.14-.19-1.16-1.54-1.16-2.94 0-1.4.73-2.09 1-2.37.24-.26.54-.33.72-.33.18 0 .36 0 .52.01.17.01.4.06.61.52.24.53.82 2 .89 2.15.07.15.11.33.02.53-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.14-.29.3-.12.59.17.29.74 1.22 1.6 1.98 1.1 1 2.03 1.31 2.32 1.45.29.14.46.12.63-.07.17-.19.74-.86.94-1.15.2-.29.4-.24.67-.14.28.1 1.75.83 2.05.98.3.15.5.22.57.34.07.13.07.74-.17 1.42z"/></svg>
       </div>
-      <span class="online-indicator"></span>
+      <span class="online-indicator" id="floatingBtnIndicator"></span>
     </a>
   </div>
 

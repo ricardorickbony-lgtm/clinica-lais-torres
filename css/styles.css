@@ -1815,70 +1815,348 @@ button {
 }
 
 /* ==========================================================================
-   15. Botão Flutuante de WhatsApp
+   15. Smart WhatsApp Concierge & Botão Flutuante (Horário em Tempo Real)
    ========================================================================== */
 .floating-whatsapp-container {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
   z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
+/* Botão Redondo Principal (FAB) */
 .floating-whatsapp-btn {
-  width: 62px;
-  height: 62px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: var(--whatsapp);
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px var(--whatsapp-glow);
+  box-shadow: 0 8px 28px var(--whatsapp-glow);
   position: relative;
-  transition: transform var(--transition-fast);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  flex-shrink: 0;
+  text-decoration: none;
 }
 
 .floating-whatsapp-btn:hover {
   transform: scale(1.08);
-  background: var(--whatsapp-hover);
+  box-shadow: 0 12px 32px rgba(37, 211, 102, 0.5);
 }
 
 .whatsapp-icon-wrapper svg {
   width: 34px;
   height: 34px;
+  display: block;
 }
 
+/* Indicador de Status no Botão */
 .online-indicator {
   position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 14px;
-  height: 14px;
-  background-color: #2ECC71;
-  border: 2px solid #FFFFFF;
+  top: 3px;
+  right: 3px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
+  border: 2.5px solid #FFFFFF;
+  transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-.floating-tooltip {
-  position: absolute;
-  right: 74px;
-  background: var(--dark-bg);
+.online-indicator.online {
+  background-color: #2ECC71;
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.9);
+}
+
+.online-indicator.offline {
+  background-color: #D4B993;
+  box-shadow: 0 0 8px rgba(212, 185, 147, 0.6);
+}
+
+/* Pílula de Status Externa (Desktop) */
+.floating-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(26, 23, 21, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(197, 168, 128, 0.3);
   color: #FFFFFF;
   font-size: 0.8125rem;
   font-weight: 600;
-  padding: 0.45rem 0.95rem;
+  padding: 0.55rem 1.1rem;
   border-radius: var(--radius-pill);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
   white-space: nowrap;
-  box-shadow: var(--shadow-md);
-  pointer-events: none;
+  user-select: none;
+  transition: all var(--transition-normal);
+}
+
+.floating-status-pill:hover {
+  background: #1A1715;
+  border-color: var(--gold-500);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+}
+
+/* Efeito Ping Beacon (Radar) */
+.status-pulse-beacon {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.status-pulse-beacon.online {
+  background: #2ECC71;
+}
+
+.status-pulse-beacon.online::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid #2ECC71;
+  animation: beacon-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.status-pulse-beacon.offline {
+  background: #D4B993;
+  box-shadow: 0 0 6px rgba(212, 185, 147, 0.7);
+}
+
+.status-pulse-beacon.offline::after {
+  display: none;
+}
+
+@keyframes beacon-ping {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Card Concierge Flutuante VIP */
+.whatsapp-concierge-card {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 340px;
+  background: rgba(26, 23, 21, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  border-radius: 20px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
   opacity: 0;
-  transform: translateX(10px);
+  visibility: hidden;
+  transform: translateY(14px) scale(0.96);
+  transform-origin: bottom right;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1000;
+}
+
+.whatsapp-concierge-card.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* Header do Concierge */
+.concierge-header {
+  padding: 1.1rem 1.15rem 0.95rem;
+  background: linear-gradient(135deg, rgba(37, 33, 30, 0.95) 0%, rgba(26, 23, 21, 0.98) 100%);
+  border-bottom: 1px solid rgba(197, 168, 128, 0.2);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.concierge-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.concierge-avatar-wrapper {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.concierge-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold-500);
+}
+
+.concierge-avatar-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #1A1715;
+}
+
+.concierge-avatar-dot.online {
+  background-color: #2ECC71;
+}
+
+.concierge-avatar-dot.offline {
+  background-color: #D4B993;
+}
+
+.concierge-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.concierge-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.concierge-name {
+  color: #FFFFFF;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.verified-badge-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.concierge-tag {
+  color: var(--gold-400);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.concierge-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+}
+
+.concierge-status-pill .status-pill-label {
+  font-size: 0.7188rem;
+  font-weight: 600;
+  color: #EBDCC6;
+}
+
+.btn-close-concierge {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.2rem;
+  transition: color var(--transition-fast);
+}
+
+.btn-close-concierge:hover {
+  color: #FFFFFF;
+}
+
+/* Corpo do Concierge */
+.concierge-body {
+  padding: 1rem 1.15rem;
+  background: rgba(18, 15, 14, 0.4);
+}
+
+.concierge-chat-bubble {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(197, 168, 128, 0.18);
+  border-radius: 14px 14px 14px 3px;
+  padding: 0.85rem 1rem;
+  color: #F4EFEA;
+  font-size: 0.8438rem;
+  line-height: 1.45;
+  margin-bottom: 0.8rem;
+  position: relative;
+}
+
+.concierge-chat-bubble p {
+  margin: 0;
+  color: #F4EFEA;
+}
+
+.chat-bubble-time {
+  font-size: 0.6875rem;
+  color: var(--gold-400);
+  text-align: right;
+  display: block;
+  margin-top: 0.35rem;
+  font-weight: 500;
+}
+
+.concierge-schedule-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--gold-300);
+  font-weight: 500;
+}
+
+.schedule-clock-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  stroke: var(--gold-400);
+}
+
+/* Rodapé / Botão de Ação */
+.concierge-footer {
+  padding: 0.85rem 1.15rem 1.15rem;
+  background: rgba(26, 23, 21, 0.98);
+}
+
+.btn-concierge-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  background: linear-gradient(135deg, #25D366 0%, #1EBE5D 100%);
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
   transition: all var(--transition-fast);
 }
 
-.floating-whatsapp-container:hover .floating-tooltip {
-  opacity: 1;
-  transform: translateX(0);
+.btn-concierge-action:hover {
+  background: linear-gradient(135deg, #28E16D 0%, #20CD64 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
+  color: #FFFFFF;
+}
+
+.concierge-btn-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
@@ -2096,8 +2374,15 @@ button {
     right: 1.25rem;
   }
 
-  .floating-tooltip {
+  .floating-status-pill {
     display: none;
+  }
+
+  .whatsapp-concierge-card {
+    width: calc(100vw - 2.5rem);
+    max-width: 340px;
+    right: 0;
+    bottom: 74px;
   }
 }
 
