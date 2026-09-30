@@ -4,15 +4,24 @@
    ========================================================================== */
 
 :root {
-  /* Paleta Primária - Ouro Acetinado / Champagne Bronze */
+  /* 1. Tokens Primitivos: Ouro Acetinado & Champagne Bronze */
+  --gold-100: #F7F3EE;
+  --gold-200: #EFE8DC;
   --gold-300: #E6D5BD;
   --gold-400: #D4B993;
   --gold-500: #C5A880;
   --gold-600: #B38E65;
   --gold-700: #8E6A42;
+  --gold-800: #6B4E2B;
+  --gold-900: #4A3319;
   --gold-glow: rgba(197, 168, 128, 0.25);
 
-  /* Neutros Claros / Pele & Seda */
+  /* Tokens de Contraste e Acessibilidade (WCAG 2.2 AA / AAA) */
+  --text-gold-dark: #7A572F;
+  --focus-ring: rgba(179, 142, 101, 0.45);
+  --focus-outline: #8E6A42;
+
+  /* 2. Tokens Semânticos: Superfícies e Fundos */
   --bg-body: #FAF8F5;
   --bg-surface: #FFFFFF;
   --bg-surface-alt: #F4EFEA;
@@ -47,10 +56,12 @@
   --shadow-lg: 0 16px 40px rgba(31, 27, 24, 0.12);
   --shadow-gold: 0 8px 25px rgba(197, 168, 128, 0.3);
 
-  /* Transições Suaves */
-  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Transições e Física de Movimento (UI/UX Pro Max) */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.18s var(--ease-smooth);
+  --transition-normal: 0.3s var(--ease-smooth);
+  --transition-slow: 0.55s var(--ease-smooth);
 
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -100,7 +111,73 @@ button {
   border: none;
   background: none;
   cursor: pointer;
-  outline: none;
+}
+
+/* Skip Link Acessível (WCAG 2.2 AA) */
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 1.5rem;
+  background: var(--dark-bg);
+  color: var(--text-gold-light);
+  padding: 0.85rem 1.6rem;
+  border: 1px solid var(--gold-500);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  z-index: 100000;
+  transition: top 0.25s var(--ease-spring);
+  box-shadow: var(--shadow-lg);
+  text-decoration: none;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 1.25rem;
+  outline: 2px solid var(--gold-400);
+  outline-offset: 3px;
+}
+
+/* Foco Visível Global Acessível (WCAG 2.2 AA / AAA) */
+:focus-visible {
+  outline: 2px solid var(--focus-outline);
+  outline-offset: 3px;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible,
+.faq-question:focus-visible,
+.case-image-wrapper:focus-visible,
+.slider-btn:focus-visible {
+  outline: 2px solid var(--focus-outline);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px var(--focus-ring);
+}
+
+/* Tipografia Responsiva & Text Layout Resilience */
+h1, h2, h3, h4,
+.hero-title,
+.section-title,
+.case-title {
+  text-wrap: balance;
+}
+p, .hero-subtitle, .section-subtitle, .case-desc {
+  text-wrap: pretty;
+}
+
+/* Suporte a Redução de Movimento (Acessibilidade Vestibular) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-badge-live,
+  .concierge-avatar-dot.online,
+  .pulse-ring {
+    animation: none !important;
+  }
 }
 
 /* Container Responsivo */
@@ -347,13 +424,18 @@ button {
   height: 18px;
 }
 
-/* Mobile Toggle Hamburger */
+/* Mobile Toggle Hamburger (Touch Target 44x44px - WCAG 2.2 AA) */
 .mobile-toggle {
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 26px;
-  height: 18px;
+  width: 44px;
+  height: 44px;
+  padding: 13px 9px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
 }
 
 .mobile-toggle .bar {
@@ -878,7 +960,7 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-weight: 700;
-  color: var(--gold-600);
+  color: var(--text-gold-dark);
   margin-bottom: 0.75rem;
 }
 
@@ -1346,12 +1428,24 @@ button {
 }
 
 .slider-dots .dot {
+  position: relative;
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background: var(--border-subtle);
   cursor: pointer;
   transition: all var(--transition-fast);
+}
+
+/* Touch Target Invisível 44x44px (WCAG 2.2 AA) */
+.slider-dots .dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
 }
 
 .slider-dots .dot.active {
@@ -1819,8 +1913,8 @@ button {
    ========================================================================== */
 .floating-whatsapp-container {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: max(2rem, env(safe-area-inset-bottom, 2rem));
+  right: max(2rem, env(safe-area-inset-right, 2rem));
   z-index: 999;
   display: flex;
   align-items: center;
@@ -2067,12 +2161,18 @@ button {
   font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
-  padding: 0.2rem;
-  transition: color var(--transition-fast);
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
 }
 
 .btn-close-concierge:hover {
   color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Corpo do Concierge */
@@ -2370,8 +2470,8 @@ button {
   }
 
   .floating-whatsapp-container {
-    bottom: 1.25rem;
-    right: 1.25rem;
+    bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
+    right: max(1.25rem, env(safe-area-inset-right, 1.25rem));
   }
 
   .floating-status-pill {
@@ -3093,8 +3193,8 @@ button {
 /* Trigger Flutuante Discreto de Reabrir Preferências */
 .cookie-privacy-trigger {
   position: fixed;
-  bottom: 1.5rem;
-  left: 1.5rem;
+  bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem));
+  left: max(1.5rem, env(safe-area-inset-left, 1.5rem));
   z-index: 990;
   background: #FFFFFF;
   border: 1px solid var(--border-subtle);
@@ -3167,8 +3267,8 @@ button {
   }
 
   .cookie-privacy-trigger {
-    bottom: 0.75rem;
-    left: 0.75rem;
+    bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+    left: max(0.75rem, env(safe-area-inset-left, 0.75rem));
     padding: 0.35rem 0.65rem;
     font-size: 0.7rem;
   }
@@ -3560,8 +3660,8 @@ button {
   top: 14px;
   right: 14px;
   z-index: 10;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(0,0,0,0.65);
   border: 1px solid rgba(255,255,255,0.2);

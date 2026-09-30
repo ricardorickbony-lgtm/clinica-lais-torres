@@ -491,13 +491,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseLightbox = document.getElementById('btnCloseLightbox');
 
   if (caseLightbox && lightboxImg && lightboxTitle) {
-    const openLightbox = (imgSrc, caption) => {
+    let lastFocusedTrigger = null;
+
+    const openLightbox = (imgSrc, caption, triggerEl) => {
+      lastFocusedTrigger = triggerEl || document.activeElement;
       lightboxImg.src = imgSrc;
       lightboxImg.alt = caption;
       lightboxTitle.textContent = caption;
       caseLightbox.classList.add('show');
       caseLightbox.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      if (btnCloseLightbox) {
+        setTimeout(() => btnCloseLightbox.focus(), 50);
+      }
     };
 
     const closeLightbox = () => {
@@ -507,13 +513,24 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         lightboxImg.src = '';
       }, 250);
+      if (lastFocusedTrigger && typeof lastFocusedTrigger.focus === 'function') {
+        lastFocusedTrigger.focus();
+      }
     };
 
     caseWrappers.forEach(wrap => {
-      wrap.addEventListener('click', () => {
+      const triggerOpen = () => {
         const fullImg = wrap.getAttribute('data-full-img');
         const caption = wrap.getAttribute('data-caption') || 'Caso Clínico — Dra. Laís Torres';
-        if (fullImg) openLightbox(fullImg, caption);
+        if (fullImg) openLightbox(fullImg, caption, wrap);
+      };
+
+      wrap.addEventListener('click', triggerOpen);
+      wrap.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          triggerOpen();
+        }
       });
     });
 
@@ -528,6 +545,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && caseLightbox.classList.contains('show')) {
         closeLightbox();
+      }
+    });
+
+    // Trap focus dentro do Lightbox ativo (WCAG 2.2 Modal Requirement)
+    caseLightbox.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab' && caseLightbox.classList.contains('show')) {
+        const focusableElements = caseLightbox.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length === 0) return;
+        const firstEl = focusableElements[0];
+        const lastEl = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        } else if (!e.shiftKey && document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
       }
     });
   }
