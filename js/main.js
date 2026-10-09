@@ -112,66 +112,130 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =========================================================================
-  // 5. Carrossel de Depoimentos (Google Reviews)
+  // 5. Carrossel de Depoimentos & Sincronização Dinâmica do Google Reviews (n8n 24h)
   // =========================================================================
-  const testimonials = document.querySelectorAll('.testimonial-card');
+  const track = document.getElementById('testimonialsTrack');
   const prevBtn = document.getElementById('prevReview');
   const nextBtn = document.getElementById('nextReview');
   const dotsContainer = document.getElementById('sliderDots');
   let currentReview = 0;
+  let activeCards = [];
 
-  if (testimonials.length > 0 && dotsContainer) {
-    // Configura os dots indicadores
-    const dots = dotsContainer.querySelectorAll('.dot');
+  const updateSlider = (index) => {
+    if (activeCards.length === 0) return;
+    const dots = dotsContainer ? dotsContainer.querySelectorAll('.dot') : [];
 
-    const updateSlider = (index) => {
-      // Ajuste para telas pequenas onde apenas um card é mostrado por vez
-      if (window.innerWidth <= 1024) {
-        testimonials.forEach((card, idx) => {
-          card.style.display = idx === index ? 'flex' : 'none';
-        });
-      } else {
-        testimonials.forEach(card => {
-          card.style.display = 'flex';
-        });
-      }
-
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === index);
+    if (window.innerWidth <= 1024) {
+      activeCards.forEach((card, idx) => {
+        card.style.display = idx === index ? 'flex' : 'none';
       });
-      currentReview = index;
-    };
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
-        let newIdx = currentReview - 1;
-        if (newIdx < 0) newIdx = testimonials.length - 1;
-        updateSlider(newIdx);
-      });
-    }
-
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        let newIdx = currentReview + 1;
-        if (newIdx >= testimonials.length) newIdx = 0;
-        updateSlider(newIdx);
+    } else {
+      activeCards.forEach(card => {
+        card.style.display = 'flex';
       });
     }
 
     dots.forEach((dot, idx) => {
-      dot.addEventListener('click', () => {
-        updateSlider(idx);
-      });
+      dot.classList.toggle('active', idx === index);
+    });
+    currentReview = index;
+  };
+
+  const setupSlider = () => {
+    activeCards = Array.from(document.querySelectorAll('.testimonial-card'));
+    if (!dotsContainer || activeCards.length === 0) return;
+
+    // Reconstrói os dots conforme o número de avaliações disponíveis
+    dotsContainer.innerHTML = '';
+    activeCards.forEach((_, idx) => {
+      const dot = document.createElement('span');
+      dot.className = `dot ${idx === 0 ? 'active' : ''}`;
+      dot.setAttribute('role', 'button');
+      dot.setAttribute('aria-label', `Ir para depoimento ${idx + 1}`);
+      dot.addEventListener('click', () => updateSlider(idx));
+      dotsContainer.appendChild(dot);
     });
 
-    // Responsividade do Slider ao redimensionar tela
-    window.addEventListener('resize', () => {
-      updateSlider(currentReview);
-    });
-
-    // Inicialização
     updateSlider(0);
+  };
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (activeCards.length === 0) return;
+      let newIdx = currentReview - 1;
+      if (newIdx < 0) newIdx = activeCards.length - 1;
+      updateSlider(newIdx);
+    });
   }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      if (activeCards.length === 0) return;
+      let newIdx = currentReview + 1;
+      if (newIdx >= activeCards.length) newIdx = 0;
+      updateSlider(newIdx);
+    });
+  }
+
+  // Redimensionamento responsivo
+  window.addEventListener('resize', () => {
+    updateSlider(currentReview);
+  });
+
+  // Inicialização inicial com os cards já presentes no HTML
+  setupSlider();
+
+  // Carrega e sincroniza dinamicamente as avaliações reais atualizadas pelo fluxo n8n (data/reviews.json)
+  const syncDynamicGoogleReviews = async () => {
+    try {
+      const res = await fetch('data/reviews.json?v=' + Date.now());
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data || !Array.isArray(data.reviews) || data.reviews.length === 0) return;
+
+      if (track) {
+        track.innerHTML = '';
+        data.reviews.forEach(rev => {
+          const card = document.createElement('div');
+          card.className = `testimonial-card ${rev.featured ? 'card-featured' : ''}`;
+          card.innerHTML = `
+            <div class="testimonial-rating">
+              <span class="stars">${'★'.repeat(rev.rating || 5)}</span>
+              <span class="source">${rev.date || 'Google Maps • Avaliação 5 estrelas'}</span>
+            </div>
+            <p class="testimonial-text">“${rev.text}”</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">${rev.initials || (rev.author ? rev.author.substring(0, 2).toUpperCase() : 'LT')}</div>
+              <div class="author-info">
+                <strong>${rev.author}</strong>
+                <span>${rev.procedure ? 'Paciente de ' + rev.procedure + ' • ' : ''}${rev.location || 'Santo André'}</span>
+              </div>
+            </div>
+          `;
+          track.appendChild(card);
+        });
+
+        // Recalibra os dots e os cards do carrossel
+        setupSlider();
+      }
+
+      // Atualiza o contador de avaliações no topo se disponível
+      if (data.clinic && data.clinic.reviewCount) {
+        const trustReviews = document.querySelectorAll('.trust-text');
+        trustReviews.forEach(el => {
+          if (el.textContent.includes('Google')) {
+            const ratingVal = data.clinic.rating ? Number(data.clinic.rating).toFixed(1) : '5.0';
+            el.innerHTML = `<strong>${ratingVal} no Google</strong> (+${data.clinic.reviewCount} Avaliações)`;
+          }
+        });
+      }
+    } catch (err) {
+      // Fallback gracioso mantendo os depoimentos estáticos originais
+      console.info('Sistema de reviews ativo com fallback estático.');
+    }
+  };
+
+  syncDynamicGoogleReviews();
 
   // =========================================================================
   // 6. Copiar Endereço para a Área de Transferência & Toast

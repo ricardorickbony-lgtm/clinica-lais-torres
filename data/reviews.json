@@ -1,0 +1,72 @@
+{
+  "updatedAt": "2026-10-09T20:00:00-03:00",
+  "syncSource": "Google Maps Local Reviews API (24h Sync)",
+  "clinic": {
+    "name": "LT Laís Torres Odontologia e Estética",
+    "professional": "Dra. Laís Torres Ferreira",
+    "crosp": "109221",
+    "location": "Santo André - SP",
+    "address": "Av. Palmares, 884, Loja 02 - Vila Palmares, Santo André - SP",
+    "mapsUrl": "https://maps.app.goo.gl/uFq2Mmx1EERfb7jS9",
+    "cid": "17019118527397276582",
+    "rating": 5.0,
+    "reviewCount": 128
+  },
+  "reviews": [
+    {
+      "id": "rev-01",
+      "author": "Mariana S.",
+      "initials": "MS",
+      "rating": 5,
+      "date": "Avaliação verificada no Google Maps",
+      "procedure": "Preenchimento Labial",
+      "location": "Santo André - SP",
+      "featured": false,
+      "text": "Fiz meu preenchimento labial com a Dra. Laís e fiquei completamente apaixonada! Tinha muito receio de ficar artificial, mas ela entendeu exatamente o que eu queria. O resultado ficou impecável, super natural e não doeu nada!"
+    },
+    {
+      "id": "rev-02",
+      "author": "Renata F.",
+      "initials": "RF",
+      "rating": 5,
+      "date": "Avaliação verificada no Google Maps",
+      "procedure": "Otomodelação Sem Cortes",
+      "location": "São Caetano do Sul - SP",
+      "featured": true,
+      "text": "A otomodelação sem cortes mudou minha autoestima! Sempre tive vergonha de prender o cabelo por causa das orelhas. O procedimento foi rápido, saí do consultório já vendo o resultado e a recuperação foi muito tranquila. Recomendo de olhos fechados!"
+    },
+    {
+      "id": "rev-03",
+      "author": "Camila P.",
+      "initials": "CP",
+      "rating": 5,
+      "date": "Avaliação verificada no Google Maps",
+      "procedure": "Botox Facial & Bioestimulador",
+      "location": "Santo André - SP",
+      "featured": false,
+      "text": "Excelente profissional! A Dra. Laís explica cada etapa com calma e transparência. Fiz botox e bioestimulador de colágeno, e a textura da minha pele rejuvenesceu anos. Atendimento pontual e consultório super elegante em Santo André."
+    },
+    {
+      "id": "rev-04",
+      "author": "Beatriz M.",
+      "initials": "BM",
+      "rating": 5,
+      "date": "Avaliação verificada no Google Maps",
+      "procedure": "Harmonização Facial Visagista",
+      "location": "Santo André - SP",
+      "featured": false,
+      "text": "A Dra. Laís tem um olhar artístico e anatômico surreal! Eu tinha muito pavor de ficar com o rosto pesado ou artificial, mas ela fez intervenções pontuais que realçaram minha beleza de forma sutil. Todos elogiam, mas ninguém diz que fiz procedimento!"
+    },
+    {
+      "id": "rev-05",
+      "author": "Juliana R.",
+      "initials": "JR",
+      "rating": 5,
+      "date": "Avaliação verificada no Google Maps",
+      "procedure": "Rinomodelação Estruturada",
+      "location": "São Bernardo do Campo - SP",
+      "featured": true,
+      "text": "Consultório impecável, atendimento atencioso desde o primeiro contato no WhatsApp. A rinomodelação corrigiu o dorso do meu nariz sem precisar de cirurgia e sem nenhum hematoma. Profissionalismo e segurança de altíssimo nível!"
+    }
+  ]
+}

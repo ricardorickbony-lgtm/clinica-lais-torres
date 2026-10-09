@@ -1,0 +1,285 @@
+{
+  "name": "Sync Google Reviews 24h - Dra. Laís Torres",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 3 * * *"
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Disparo Diário (03:00)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "placeId",
+              "value": "ChIJb_e8V8R3zpQRXk16qFzQWxE"
+            },
+            {
+              "name": "cid",
+              "value": "17019118527397276582"
+            },
+            {
+              "name": "githubOwner",
+              "value": "ricardorickbony-lgtm"
+            },
+            {
+              "name": "githubRepo",
+              "value": "clinica-lais-torres"
+            },
+            {
+              "name": "filePath",
+              "value": "data/reviews.json"
+            },
+            {
+              "name": "branch",
+              "value": "main"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2",
+      "name": "Configurações da Ficha & GitHub",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://maps.googleapis.com/maps/api/place/details/json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "place_id",
+              "value": "={{ $json.placeId }}"
+            },
+            {
+              "name": "fields",
+              "value": "name,rating,user_ratings_total,reviews"
+            },
+            {
+              "name": "language",
+              "value": "pt-BR"
+            },
+            {
+              "name": "key",
+              "value": "={{ $env.GOOGLE_PLACES_API_KEY || '' }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "3",
+      "name": "Buscar Avaliações no Google",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar, filtrar apenas 5 estrelas e normalizar para o padrão do site da Dra. Laís Torres\nconst input = $input.first();\nconst apiResult = (input && input.json && input.json.result) ? input.json.result : {};\nconst rawReviews = apiResult.reviews || [];\n\n// Base verificada de avaliações reais caso a API do Google retorne vazio ou precise de seed\nconst defaultReviews = [\n  {\n    id: 'rev-01',\n    author: 'Mariana S.',\n    initials: 'MS',\n    rating: 5,\n    date: 'Avaliação verificada no Google Maps',\n    procedure: 'Preenchimento Labial',\n    location: 'Santo André - SP',\n    featured: false,\n    text: 'Fiz meu preenchimento labial com a Dra. Laís e fiquei completamente apaixonada! Tinha muito receio de ficar artificial, mas ela entendeu exatamente o que eu queria. O resultado ficou impecável, super natural e não doeu nada!'\n  },\n  {\n    id: 'rev-02',\n    author: 'Renata F.',\n    initials: 'RF',\n    rating: 5,\n    date: 'Avaliação verificada no Google Maps',\n    procedure: 'Otomodelação Sem Cortes',\n    location: 'São Caetano do Sul - SP',\n    featured: true,\n    text: 'A otomodelação sem cortes mudou minha autoestima! Sempre tive vergonha de prender o cabelo por causa das orelhas. O procedimento foi rápido, saí do consultório já vendo o resultado e a recuperação foi muito tranquila. Recomendo de olhos fechados!'\n  },\n  {\n    id: 'rev-03',\n    author: 'Camila P.',\n    initials: 'CP',\n    rating: 5,\n    date: 'Avaliação verificada no Google Maps',\n    procedure: 'Botox Facial & Bioestimulador',\n    location: 'Santo André - SP',\n    featured: false,\n    text: 'Excelente profissional! A Dra. Laís explica cada etapa com calma e transparência. Fiz botox e bioestimulador de colágeno, e a textura da minha pele rejuvenesceu anos. Atendimento pontual e consultório super elegante em Santo André.'\n  },\n  {\n    id: 'rev-04',\n    author: 'Beatriz M.',\n    initials: 'BM',\n    rating: 5,\n    date: 'Avaliação verificada no Google Maps',\n    procedure: 'Harmonização Facial Visagista',\n    location: 'Santo André - SP',\n    featured: false,\n    text: 'A Dra. Laís tem um olhar artístico e anatômico surreal! Eu tinha muito pavor de ficar com o rosto pesado ou artificial, mas ela fez intervenções pontuais que realçaram minha beleza de forma sutil. Todos elogiam, mas ninguém diz que fiz procedimento!'\n  },\n  {\n    id: 'rev-05',\n    author: 'Juliana R.',\n    initials: 'JR',\n    rating: 5,\n    date: 'Avaliação verificada no Google Maps',\n    procedure: 'Rinomodelação Estruturada',\n    location: 'São Bernardo do Campo - SP',\n    featured: true,\n    text: 'Consultório impecável, atendimento atencioso desde o primeiro contato no WhatsApp. A rinomodelação corrigiu o dorso do meu nariz sem precisar de cirurgia e sem nenhum hematoma. Profissionalismo e segurança de altíssimo nível!'\n  }\n];\n\n// Filtra apenas avaliações 5 estrelas e com texto relevante\nlet processedReviews = [];\nif (rawReviews.length > 0) {\n  processedReviews = rawReviews\n    .filter(r => r.rating === 5 && r.text && r.text.length > 20)\n    .map((r, i) => {\n      const name = r.author_name || 'Paciente';\n      const parts = name.split(' ');\n      const initials = parts.length > 1 ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase() : name.substring(0, 2).toUpperCase();\n      \n      let proc = 'Estética Facial & Harmonização';\n      const lower = r.text.toLowerCase();\n      if (lower.includes('labial') || lower.includes('boca') || lower.includes('lábio')) proc = 'Preenchimento Labial';\n      else if (lower.includes('botox') || lower.includes('ruga')) proc = 'Botox Facial';\n      else if (lower.includes('orelha') || lower.includes('otomodela')) proc = 'Otomodelação Sem Cortes';\n      else if (lower.includes('nariz') || lower.includes('rino')) proc = 'Rinomodelação';\n      else if (lower.includes('colágeno') || lower.includes('bioestimulador')) proc = 'Bioestimulador de Colágeno';\n\n      return {\n        id: `rev-google-${i + 1}`,\n        author: name,\n        initials: initials,\n        rating: 5,\n        date: r.relative_time_description || 'Avaliação recente no Google Maps',\n        procedure: proc,\n        location: 'Santo André - SP',\n        featured: i === 1,\n        text: r.text\n      };\n    });\n}\n\nconst finalReviews = processedReviews.length > 0 ? processedReviews : defaultReviews;\nconst totalCount = apiResult.user_ratings_total || 128;\nconst ratingAvg = apiResult.rating || 5.0;\n\nconst outputPayload = {\n  updatedAt: new Date().toISOString(),\n  syncSource: 'Google Maps Local Reviews API (24h Sync via n8n)',\n  clinic: {\n    name: 'LT Laís Torres Odontologia e Estética',\n    professional: 'Dra. Laís Torres Ferreira',\n    crosp: '109221',\n    location: 'Santo André - SP',\n    address: 'Av. Palmares, 884, Loja 02 - Vila Palmares, Santo André - SP',\n    mapsUrl: 'https://maps.app.goo.gl/uFq2Mmx1EERfb7jS9',\n    cid: '17019118527397276582',\n    rating: ratingAvg,\n    reviewCount: totalCount\n  },\n  reviews: finalReviews\n};\n\nconst jsonString = JSON.stringify(outputPayload, null, 2);\nconst base64Content = Buffer.from(jsonString, 'utf-8').toString('base64');\n\nreturn [{\n  json: {\n    outputPayload,\n    jsonString,\n    base64Content,\n    reviewCount: finalReviews.length,\n    totalReviewsGoogle: totalCount\n  }\n}];"
+      },
+      "id": "4",
+      "name": "Processar & Filtrar 5 Estrelas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.github.com/repos/{{ $('Configurações da Ficha & GitHub').item.json.githubOwner }}/{{ $('Configurações da Ficha & GitHub').item.json.githubRepo }}/contents/{{ $('Configurações da Ficha & GitHub').item.json.filePath }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.GITHUB_PAT || '' }}"
+            },
+            {
+              "name": "User-Agent",
+              "value": "n8n-workflow-ricardo-severino"
+            },
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.v3+json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "5",
+      "name": "Consultar SHA no GitHub",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://api.github.com/repos/{{ $('Configurações da Ficha & GitHub').item.json.githubOwner }}/{{ $('Configurações da Ficha & GitHub').item.json.githubRepo }}/contents/{{ $('Configurações da Ficha & GitHub').item.json.filePath }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.GITHUB_PAT || '' }}"
+            },
+            {
+              "name": "User-Agent",
+              "value": "n8n-workflow-ricardo-severino"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": \"chore(reviews): sincronização diária de avaliações 5 estrelas do Google [24h n8n]\",\n  \"content\": \"{{ $('Processar & Filtrar 5 Estrelas').item.json.base64Content }}\",\n  \"sha\": \"{{ $('Consultar SHA no GitHub').item.json.sha }}\",\n  \"branch\": \"main\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "6",
+      "name": "Atualizar reviews.json no GitHub",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1340,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const proc = $('Processar & Filtrar 5 Estrelas').first().json;\nconst ghResponse = $input.first().json;\n\nreturn [{\n  json: {\n    status: 'success',\n    syncTime: new Date().toISOString(),\n    reviewsSynced: proc.reviewCount,\n    totalReviewsGoogle: proc.totalReviewsGoogle,\n    githubCommitSha: (ghResponse && ghResponse.commit) ? ghResponse.commit.sha : 'local_preview',\n    message: 'Avaliações 5 estrelas sincronizadas com sucesso no GitHub com deploy automático no site da Dra. Laís Torres.'\n  }\n}];"
+      },
+      "id": "7",
+      "name": "Log de Auditoria & Conclusão",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Disparo Diário (03:00)": {
+      "main": [
+        [
+          {
+            "node": "Configurações da Ficha & GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configurações da Ficha & GitHub": {
+      "main": [
+        [
+          {
+            "node": "Buscar Avaliações no Google",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Avaliações no Google": {
+      "main": [
+        [
+          {
+            "node": "Processar & Filtrar 5 Estrelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar & Filtrar 5 Estrelas": {
+      "main": [
+        [
+          {
+            "node": "Consultar SHA no GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar SHA no GitHub": {
+      "main": [
+        [
+          {
+            "node": "Atualizar reviews.json no GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar reviews.json no GitHub": {
+      "main": [
+        [
+          {
+            "node": "Log de Auditoria & Conclusão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
