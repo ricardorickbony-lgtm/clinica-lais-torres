@@ -3778,5 +3778,245 @@ p, .hero-subtitle, .section-subtitle, .case-desc {
   }
 }
 
+/* ==========================================================================
+   Quiet Luxury 2026: Componentes Editoriais & Filosofia Clínica (Dra. Laís)
+   ========================================================================== */
+
+/* Hero Manifesto Box */
+.hero-manifesto-box {
+  background: rgba(197, 168, 128, 0.08);
+  border-left: 3px solid var(--gold-500);
+  padding: 1rem 1.25rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+.hero-manifesto-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.975rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Card Hero Editorial Portrait */
+.card-hero-editorial {
+  max-width: 440px;
+  padding: 1.5rem;
+}
+
+.editorial-portrait-frame {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 10px 25px rgba(31, 27, 24, 0.12);
+  border: 2px solid #FFFFFF;
+}
+
+.editorial-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  transition: transform var(--transition-slow);
+}
+
+.card-hero-editorial:hover .editorial-portrait-img {
+  transform: scale(1.03);
+}
+
+.portrait-badge-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  background: rgba(26, 23, 21, 0.82);
+  backdrop-filter: blur(8px);
+  color: var(--text-gold-light);
+  font-size: 0.775rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-pill);
+  text-align: center;
+  border: 1px solid rgba(197, 168, 128, 0.35);
+}
+
+/* Philosophy Section (Anti-AI Cliché / Quiet Luxury) */
+.philosophy-section {
+  position: relative;
+  padding: 6rem 0;
+  background: radial-gradient(circle at 85% 15%, #FFFDFB 0%, #F6EFE6 60%, #EFE3D4 100%);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 4.5rem;
+  align-items: center;
+}
+
+.philosophy-frame {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(31, 27, 24, 0.16);
+  border: 3px solid #FFFFFF;
+}
+
+.philosophy-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  transition: transform var(--transition-slow);
+}
+
+.philosophy-frame:hover .philosophy-img {
+  transform: scale(1.02);
+}
+
+.philosophy-badge-float {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--gold-800);
+  border: 1px solid rgba(197, 168, 128, 0.4);
+}
+
+.philosophy-badge-float .p-dot {
+  color: var(--gold-600);
+  font-size: 1.1rem;
+}
+
+.philosophy-title {
+  margin-bottom: 1.5rem;
+  line-height: 1.25;
+}
+
+.philosophy-lead {
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: 1.75rem;
+}
+
+.philosophy-quote-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-left: 4px solid var(--gold-600);
+  padding: 1.5rem 1.75rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.75rem;
+}
+
+.philosophy-quote-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.philosophy-quote-author {
+  display: block;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--gold-700);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.philosophy-body {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.philosophy-badges-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+}
+
+.phil-badge-item {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(31, 27, 24, 0.03);
+}
+
+.phil-badge-icon {
+  color: var(--gold-600);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.phil-badge-item strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+}
+
+.phil-badge-item span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.philosophy-action {
+  margin-top: 1rem;
+}
+
+/* Responsividade da Seção de Filosofia */
+@media (max-width: 991px) {
+  .philosophy-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .philosophy-frame {
+    height: 440px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .philosophy-badges-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+
 
 
