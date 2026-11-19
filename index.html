@@ -324,6 +324,9 @@
 
     footer.site { padding: 36px 0 110px; font-size: 0.75rem; color: var(--taupe); border-top: 1px solid var(--line); }
     footer.site .wrap { display: grid; gap: 6px; }
+    .foot-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .foot-links a, .foot-links button { font: 500 0.72rem/1.4 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-deep); text-decoration: none; background: none; border: 0; padding: 0; cursor: pointer; }
+    .foot-links a:hover, .foot-links button:hover { text-decoration: underline; text-underline-offset: 3px; }
 
     /* ---------- WhatsApp flutuante ---------- */
     .wa {
@@ -345,17 +348,25 @@
     .wa-text b { font-weight: 500; font-size: 0.85rem; }
     .wa-text small { font-size: 0.68rem; color: rgba(251,248,244,0.7); }
 
-    /* Aviso de cookies discreto */
+    /* Aviso de cookies (LGPD) */
     .consent {
-      position: fixed; z-index: 55; left: 12px; right: 84px; bottom: max(16px, env(safe-area-inset-bottom));
-      background: var(--paper); border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(35,29,25,0.12);
-      padding: 14px 16px; display: grid; gap: 10px; font-size: 0.78rem; line-height: 1.45; color: var(--ink-soft);
+      position: fixed; z-index: 55; left: 10px; right: 80px; bottom: max(12px, env(safe-area-inset-bottom));
+      background: #fff; border: 1px solid rgba(168,132,79,0.25); box-shadow: 0 14px 40px rgba(35,29,25,0.16);
+      padding: 12px 14px; display: grid; gap: 10px; font-size: 0.72rem; line-height: 1.45; color: var(--ink-soft);
     }
     .consent[hidden] { display: none; }
-    .consent-actions { display: flex; gap: 8px; justify-content: flex-end; }
-    .consent button { font: 500 0.7rem/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; padding: 10px 14px; border: 1px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; }
-    .consent .consent-yes { background: var(--ink); color: var(--paper); }
-    @media (min-width: 760px) { .consent { right: auto; max-width: 380px; left: 24px; bottom: 24px; } }
+    .consent strong { display: none; font-family: var(--serif); font-size: 1.15rem; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+    .consent a { color: var(--gold-deep); }
+    .consent-prefs { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+    .consent-prefs[hidden] { display: none; }
+    .consent-prefs label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+    .consent-prefs input { accent-color: var(--gold-deep); width: 16px; height: 16px; margin-top: 2px; flex: none; }
+    .consent-prefs b { color: var(--ink); font-weight: 500; }
+    .consent-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .consent button { font: 500 0.62rem/1 var(--sans); letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 11px; border: 1px solid rgba(35,29,25,0.3); background: transparent; color: var(--ink); cursor: pointer; border-radius: 999px; }
+    .consent .consent-link { border-color: transparent; text-decoration: underline; text-underline-offset: 3px; padding-left: 4px; padding-right: 4px; margin-right: auto; }
+    .consent .consent-yes { background: linear-gradient(135deg, #BC965C, #86683B); border-color: transparent; color: #fff; }
+    @media (min-width: 760px) { .consent { right: auto; max-width: 420px; left: 24px; bottom: 24px; padding: 16px 18px; font-size: 0.8rem; } .consent strong { display: block; } }
 
     /* Animação suave de entrada */
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
@@ -611,7 +622,13 @@
     <div class="wrap">
       <span>Dra. Laís Torres · Cirurgiã-Dentista · CROSP 109221</span>
       <span>LT Laís Torres Odontologia e Estética Ltda · CNPJ 47.183.038/0001-00</span>
-      <span><a href="https://www.instagram.com/dralaistorresf/" target="_blank" rel="noopener">Instagram @dralaistorresf</a> · <a href="politica-de-privacidade.html">Política de privacidade</a></span>
+      <span>Av. Palmares, 884, Loja 02 · Vila Palmares, Santo André – SP</span>
+      <nav class="foot-links" aria-label="Links do rodapé">
+        <a href="politica-de-privacidade.html">Política de privacidade</a>
+        <button type="button" class="js-open-consent">Preferências de cookies</button>
+        <a href="https://www.instagram.com/dralaistorresf/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/clinicadralaistorres" target="_blank" rel="noopener">Facebook</a>
+      </nav>
     </div>
   </footer>
 
@@ -624,12 +641,21 @@
     <span class="wa-text"><b>WhatsApp</b><small class="js-wa-label">Agende sua avaliação</small></span>
   </a>
 
-  <!-- Aviso de cookies (LGPD): só aparece quando houver rastreamento configurado -->
-  <div class="consent" id="consent" role="region" aria-label="Aviso de cookies" hidden>
-    <p>Usamos cookies para medir os agendamentos feitos pelo site. <a href="politica-de-privacidade.html">Saiba mais</a></p>
+  <!-- Aviso de cookies (LGPD) com remarketing: aparece na primeira visita -->
+  <div class="consent" id="consent" role="dialog" aria-labelledby="consentTitle" hidden>
+    <div>
+      <strong id="consentTitle">Sua privacidade</strong>
+      Usamos cookies para medir agendamentos e mostrar anúncios da clínica a quem já nos visitou (remarketing Google e Meta). <a href="politica-de-privacidade.html">Política de privacidade</a>
+    </div>
+    <div class="consent-prefs" id="consentPrefs" hidden>
+      <label><input type="checkbox" checked disabled /> <span><b>Essenciais</b> · necessários para o site funcionar.</span></label>
+      <label><input type="checkbox" id="consentAnalytics" /> <span><b>Análise</b> · Google Analytics, para entender como o site é usado.</span></label>
+      <label><input type="checkbox" id="consentMarketing" /> <span><b>Anúncios e remarketing</b> · Google Ads e Meta (Facebook/Instagram).</span></label>
+    </div>
     <div class="consent-actions">
-      <button type="button" class="consent-no" data-consent="no">Recusar</button>
-      <button type="button" class="consent-yes" data-consent="yes">Aceitar</button>
+      <button type="button" class="consent-link" data-consent="prefs">Personalizar</button>
+      <button type="button" class="consent-no" data-consent="essential">Só essenciais</button>
+      <button type="button" class="consent-yes" data-consent="all">Aceitar todos</button>
     </div>
   </div>
 
@@ -698,61 +724,100 @@
         document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
       }
 
-      // ---------- Rastreamento com consentimento (LGPD) ----------
+      // ---------- Cookies, Consent Mode v2 e remarketing (LGPD) ----------
       var T = window.LT_TRACKING || {};
-      var hasTracking = !!(T.ga4 || T.googleAds || T.metaPixel);
-      var KEY = "lt_consent_v1";
-      var loaded = false;
+      var KEY = "lt_cookie_consent_preferences"; // mesma chave da página de política de privacidade
+      var gLoaded = false, metaLoaded = false;
 
-      function readConsent() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
-      function saveConsent(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function () { dataLayer.push(arguments); };
+      gtag("consent", "default", { ad_storage: "denied", analytics_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", wait_for_update: 500 });
 
-      function loadScript(src) { var s = document.createElement("script"); s.async = true; s.src = src; document.head.appendChild(s); }
+      function readConsent() { try { var v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+      function saveConsent(p) { try { localStorage.setItem(KEY, JSON.stringify({ necessary: true, analytics: !!p.analytics, marketing: !!p.marketing, updatedAt: new Date().toISOString() })); } catch (e) {} }
+      function loadScript(src) { var el = document.createElement("script"); el.async = true; el.src = src; document.head.appendChild(el); }
 
-      function loadTracking() {
-        if (loaded || !hasTracking) return;
-        loaded = true;
-        var gId = T.ga4 || T.googleAds;
-        if (gId) {
-          window.dataLayer = window.dataLayer || [];
-          window.gtag = function () { dataLayer.push(arguments); };
+      function applyConsent(p) {
+        gtag("consent", "update", {
+          analytics_storage: p.analytics ? "granted" : "denied",
+          ad_storage: p.marketing ? "granted" : "denied",
+          ad_user_data: p.marketing ? "granted" : "denied",
+          ad_personalization: p.marketing ? "granted" : "denied"
+        });
+        dataLayer.push({ event: "cookie_consent_updated", consent_analytics: !!p.analytics, consent_marketing: !!p.marketing });
+
+        var wantG = (p.analytics && T.ga4) || (p.marketing && T.googleAds);
+        if (wantG && !gLoaded) {
+          gLoaded = true;
           gtag("js", new Date());
-          if (T.ga4) gtag("config", T.ga4);
-          if (T.googleAds) gtag("config", T.googleAds);
-          loadScript("https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(gId));
+          loadScript("https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(T.ga4 || T.googleAds));
         }
-        if (T.metaPixel) {
+        if (gLoaded) {
+          if (p.analytics && T.ga4) gtag("config", T.ga4);
+          // Google Ads: conversões + públicos de remarketing
+          if (p.marketing && T.googleAds) gtag("config", T.googleAds, { allow_ad_personalization_signals: true });
+        }
+        // Meta Pixel: só com consentimento de anúncios
+        if (p.marketing && T.metaPixel && !metaLoaded) {
+          metaLoaded = true;
           !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
           fbq("init", T.metaPixel);
           fbq("track", "PageView");
         }
       }
 
-      // Cada clique no WhatsApp vira um "lead" no Google e na Meta
+      // Clique no WhatsApp = lead (GA4, conversão do Google Ads e "Contact" na Meta)
       document.addEventListener("click", function (e) {
         var a = e.target.closest && e.target.closest(".js-wa");
-        if (!a || !loaded) return;
-        var place = a.classList.contains("wa") ? "botao_flutuante" : (a.closest("section") || {}).id || "pagina";
-        if (window.gtag) {
+        if (!a) return;
+        var place = a.classList.contains("wa") ? "botao_flutuante" : (a.closest("section, header") || {}).id || "pagina";
+        dataLayer.push({ event: "whatsapp_click", location: place });
+        if (gLoaded) {
           if (T.ga4) gtag("event", "generate_lead", { method: "whatsapp", location: place });
           if (T.googleAds && T.adsLeadLabel) gtag("event", "conversion", { send_to: T.googleAds + "/" + T.adsLeadLabel });
         }
-        if (window.fbq) fbq("track", "Contact", { content_name: place });
+        if (metaLoaded && window.fbq) fbq("track", "Contact", { content_name: place });
       });
 
-      var consentBox = document.getElementById("consent");
-      var choice = readConsent();
-      if (hasTracking) {
-        if (choice === "yes") loadTracking();
-        else if (!choice && consentBox) setTimeout(function () { consentBox.hidden = false; }, 1500);
+      // Remarketing por interesse: quem viu a área de tratamentos entra no público "ViewContent"
+      var treat = document.getElementById("tratamentos");
+      if (treat && "IntersectionObserver" in window) {
+        var seen = false;
+        new IntersectionObserver(function (en) {
+          if (seen || !en[0].isIntersecting) return;
+          seen = true;
+          dataLayer.push({ event: "view_treatments" });
+          if (gLoaded && T.ga4) gtag("event", "view_item_list", { item_list_name: "tratamentos" });
+          if (metaLoaded && window.fbq) fbq("track", "ViewContent", { content_name: "tratamentos" });
+        }, { threshold: 0.25 }).observe(treat);
       }
-      if (consentBox) consentBox.addEventListener("click", function (e) {
-        var v = e.target.getAttribute && e.target.getAttribute("data-consent");
-        if (!v) return;
-        saveConsent(v);
-        consentBox.hidden = true;
-        if (v === "yes") loadTracking();
+
+      var box = document.getElementById("consent");
+      var prefs = document.getElementById("consentPrefs");
+      var chkA = document.getElementById("consentAnalytics");
+      var chkM = document.getElementById("consentMarketing");
+      function openBox() {
+        var c = readConsent() || {};
+        chkA.checked = !!c.analytics; chkM.checked = !!c.marketing;
+        box.hidden = false;
+      }
+      var saved = readConsent();
+      if (saved) applyConsent(saved); else setTimeout(openBox, 1200);
+
+      box.addEventListener("click", function (e) {
+        var btn = e.target.closest && e.target.closest("[data-consent]");
+        if (!btn) return;
+        var act = btn.getAttribute("data-consent"), p;
+        if (act === "prefs") {
+          if (prefs.hidden) { prefs.hidden = false; btn.textContent = "Salvar escolhas"; return; }
+          p = { analytics: chkA.checked, marketing: chkM.checked };
+        } else if (act === "all") { p = { analytics: true, marketing: true }; }
+        else { p = { analytics: false, marketing: false }; }
+        saveConsent(p); applyConsent(p);
+        box.hidden = true; prefs.hidden = true;
+        box.querySelector('[data-consent="prefs"]').textContent = "Personalizar";
       });
+      document.querySelectorAll(".js-open-consent").forEach(function (b) { b.addEventListener("click", openBox); });
     })();
   </script>
 </body>
