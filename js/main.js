@@ -861,7 +861,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Auto-apresentação delicada (após 10 segundos na primeira visita da sessão)
     setTimeout(() => {
-      if (!sessionStorage.getItem('concierge_dismissed') && conciergeCard && !conciergeCard.classList.contains('open')) {
+      // Não abre por cima do aviso de cookies (no celular as duas janelas tapavam o site)
+      const cookieBannerVisible = document.getElementById('cookieBanner')?.classList.contains('show');
+      if (!cookieBannerVisible && !sessionStorage.getItem('concierge_dismissed') && conciergeCard && !conciergeCard.classList.contains('open')) {
         openConcierge();
         // Fecha automaticamente após 8 segundos se o usuário não interagir
         setTimeout(() => {

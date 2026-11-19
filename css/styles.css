@@ -4064,3 +4064,248 @@ p, .hero-subtitle, .section-subtitle, .case-desc {
 
 
 
+
+/* ==========================================================================
+   18. Primeira dobra otimizada (procedimentos em destaque + correções mobile)
+   ========================================================================== */
+.hero-procedures {
+  margin: -0.75rem 0 2rem;
+}
+
+.hero-procedures-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-700);
+  margin-bottom: 0.85rem;
+}
+
+.hero-procedures-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 520px;
+}
+
+.hero-proc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-proc img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 6px 18px rgba(31, 27, 24, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-proc:hover img,
+.hero-proc:focus-visible img {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(31, 27, 24, 0.14);
+}
+
+.hero-proc:focus-visible {
+  outline: none;
+}
+
+.hero-proc:focus-visible span {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.procedure-card[id] {
+  scroll-margin-top: 96px;
+}
+
+.cookie-banner-content {
+  padding: 0;
+}
+
+.cookie-text p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+}
+
+.cookie-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-cookie-outline,
+.btn-cookie-secondary {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  padding: 0.55rem 0.95rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-cookie-outline {
+  border-color: transparent;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.btn-cookie-secondary:hover,
+.btn-cookie-outline:hover {
+  color: var(--text-primary);
+  border-color: var(--gold-600);
+}
+
+.btn-cookie-outline:hover {
+  border-color: transparent;
+}
+
+.cookie-actions .btn {
+  margin-left: auto;
+}
+
+@media (max-width: 1024px) {
+  .hero-procedures-list {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Barra superior escura ocupava ~1/4 da primeira tela: endereço e redes já aparecem no rodapé e na seção de localização */
+  .top-bar {
+    display: none;
+  }
+
+  /* Menu fechado ficava visível acima do cabeçalho (o blur do header prende o position: fixed) */
+  .main-nav {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--transition-normal), opacity var(--transition-normal), visibility 0s linear 0.3s;
+  }
+
+  .main-nav.open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transition: transform var(--transition-normal), opacity var(--transition-normal), visibility 0s;
+  }
+
+  .hero-section {
+    padding: 1.5rem 0 3rem;
+  }
+
+  .hero-grid {
+    gap: 2.5rem;
+  }
+
+  .badge-pill {
+    font-size: 0.72rem;
+    padding: 0.3rem 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .hero-description {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    margin-bottom: 1.6rem;
+  }
+
+  .hero-procedures {
+    margin: 0 0 1.5rem;
+  }
+
+  .hero-procedures-list {
+    gap: 0.6rem;
+  }
+
+  .hero-proc {
+    font-size: 0.68rem;
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+
+  .hero-proc img {
+    border-radius: 14px;
+  }
+
+  .hero-cta-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-cta-group .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-cta-group .btn-secondary {
+    display: none;
+  }
+
+  .hero-trust-bar {
+    padding-top: 1rem;
+    gap: 0.9rem;
+  }
+
+  /* Aviso de cookies compacto, deixando espaço para o botão do WhatsApp à direita */
+  .cookie-banner {
+    left: 12px;
+    right: 84px;
+    bottom: max(12px, env(safe-area-inset-bottom, 12px));
+    width: auto;
+    max-width: none;
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+  }
+
+  .cookie-text p {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    margin-bottom: 0.7rem;
+  }
+
+  .btn-cookie-outline {
+    font-size: 0.75rem;
+  }
+
+  .btn-cookie-secondary {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .cookie-actions .btn {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.78rem;
+  }
+}
